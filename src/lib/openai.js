@@ -1,67 +1,31 @@
-import { OpenAI } from "openai";
-import config from "../config/index";
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
 
-// create a singleton pattern for open Ai client
-let instance = null;
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-export function getOpenAiInstance() {
-  if (!instance) {
-    instance = new OpenAI({
-      apiKey: config.openai.apiKey,
-    });
-  }
-  return instance;
-}
-
-export async function createTaskWithAssistant(userPrompt) {
-  const openai = getOpenAiInstance();
-
+export async function POST(request) {
   try {
-    const thread = await openai.beta.threads.create();
+    const formData = await request.formData();
+    const audioFile = formData.get("file");
 
-    await openai.beta.threads.messages.create(thread.id, {
-      role: "user",
-      content: userPrompt,
-    });
-
-    const run = await openai.beta.threads.runs.create(thread.id, {
-      assistant_id: config.openai.taskCreatorAssistantId,
-    });
-
-    return { threads: thread.id, runId: run.id };
-  } catch (error) {
-    console.log("Error creating task with OpenAI:", error);
-    throw error;
-  }
-}
-
-export async function getAssistantResponse(threadId, runId) {
-  const openai = getOpenAiInstance();
-
-  try {
-    let runStatus = await openai.beta.threads.runs.retrieve(threadId, runId);
-
-    while (runStatus.status !== "completed" && runStatus.status !== "failed") {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      runStatus = await openai.beta.threads.runs.retrieve(threadId, runId);
+    if (!audioFile || !(audioFile instanceof Blob)) {
+      return NextResponse.json({ error: "No audio file provided" }, { status: 400 });
     }
 
-    if (runStatus.status === "failed") {
-      throw new Error("Assistant run failed: " + runStatus.last_error?.message);
-    }
+    const buffer = Buffer.from(await audioFile.arrayBuffer());
 
-    const messages = await openai.beta.threads.messages.list(threadId);
+    const file = new File([buffer], "audio.mp3", { type: "audio/mp3" });
 
-    return messages.data
-      .filter((message) => message.role === "assistant")
-      .map((message) => message.content[0]?.text?.value || "")
-      .join("\n");
+    const transcription = await openai.audio.transcriptions.create({
+      file: file,
+      model: "whisper-1",
+    });
+
+    return NextResponse.json({ transcription: transcription.text });
   } catch (error) {
-    console.log("Error getting response from OpenAI:", error);
-    throw error;
+    console.error("Error in transcription:", error);
+    return NextResponse.json({ error: "Failed to transcribe audio" }, { status: 500 });
   }
 }
-
-// export default instance for convenience
-const openai = getOpenAiInstance();
-export default openai;

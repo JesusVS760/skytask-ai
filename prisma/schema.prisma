@@ -8,34 +8,15 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  phoneNumber   String?   @unique
-  accounts      Account[]
+  id             String    @id @default(cuid())
+  firstName      String
+  lastName       String
+  hashedPassword String
+  email          String   @unique
   sessions      Session[]
   tasks         Task[]
-}
+  verificationCodes VerificationToken[]
 
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
 }
 
 model Session {
@@ -47,11 +28,31 @@ model Session {
 }
 
 model VerificationToken {
-  identifier String
+  code       String
+  userId     String
   token      String   @unique
   expires    DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, token])
+}
 
-  @@unique([identifier, token])
+enum TaskPriority {
+  high
+  medium
+  low
+}
+
+enum TaskStatus {
+  archived
+  completed
+  pending
+}
+
+enum Intervals {
+  daily
+  weekly
+  biweekly
+  monthly
 }
 
 model Task {
@@ -60,7 +61,14 @@ model Task {
   updatedAt   DateTime @updatedAt
   title       String
   description String?
-  status      String   @default("pending")
+  status      TaskStatus   @default(pending)
+  priority    TaskPriority
+  dueDate     DateTime
+  tags        String[]
+  isRecurring Boolean      @default(false)
+  recurringInterval Intervals    
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+// task suggestions

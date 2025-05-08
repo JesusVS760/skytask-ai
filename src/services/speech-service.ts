@@ -1,0 +1,27 @@
+import openAiConfig from "@/config/openai-config";
+
+export const speechService = {
+  async speechToText(audioFile: File): Promise<string | undefined> {
+    try {
+      const arrayBuffer = await audioFile.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      const file = new File([buffer], "audio.webm", {
+        type: audioFile.type,
+      });
+
+      const transcription = await openAiConfig.client.audio.transcriptions.create({
+        file: file,
+        model: "whisper-1",
+        response_format: "text",
+      });
+
+      return transcription;
+    } catch (error) {
+      console.error("Transcription Has Failed");
+    }
+  },
+};
+
+// EXMAPLE:
+// const text = await speechService.speechToText(file)
