@@ -59,14 +59,14 @@ model Task {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  title       String
-  description String?
+  title       String  // wanted
+  description String? // wanted
   status      TaskStatus   @default(pending)
-  priority    TaskPriority
-  dueDate     DateTime
-  tags        String[]
-  isRecurring Boolean      @default(false)
-  recurringInterval Intervals    
+  priority    TaskPriority // wanted
+  dueDate     DateTime // wanted
+  tags        String[] // wanted
+  isRecurring Boolean?      @default(false) // later
+  recurringInterval Intervals?    // later
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

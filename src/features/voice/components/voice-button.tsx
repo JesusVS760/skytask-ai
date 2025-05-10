@@ -8,6 +8,7 @@ import { useState } from "react";
 type VoiceButtonProps = {
   onHold?: () => void;
   onLetGo?: () => void;
+  loadingState?: () => void;
 };
 
 export const VoiceButton = ({ onHold, onLetGo }: VoiceButtonProps) => {
