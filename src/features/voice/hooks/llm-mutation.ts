@@ -1,17 +1,23 @@
 import { useMutation } from "@tanstack/react-query";
+import { ContextMessage } from "../schemas/context";
 
-type LlmResponse = {
+type LLMResponse = {
   task?: any;
   followUpQuestion?: string;
 };
 
-export const useLlmMutation = () => {
-  return useMutation({
-    mutationFn: async (text: string): Promise<LlmResponse> => {
+type GenerateTask = {
+  text?: string;
+  context: ContextMessage[];
+};
+
+export const useLLMMutations = () => {
+  const generateTask = useMutation({
+    mutationFn: async ({ text, context }: GenerateTask): Promise<LLMResponse> => {
       const res = await fetch("/api/llm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, context }),
       });
       if (!res.ok) {
         throw new Error("Failed to fetch llm");
@@ -25,4 +31,6 @@ export const useLlmMutation = () => {
       console.error("LLM ERROR: ", error);
     },
   });
+
+  return { generateTask };
 };

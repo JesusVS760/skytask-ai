@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String              @id @default(cuid())
+  firstName         String
+  lastName          String
+  hashedPassword    String
+  email             String              @unique
+  sessions          Session[]
+  tasks             Task[]
+  verificationCodes VerificationToken[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  code    String
+  userId  String
+  token   String   @unique
+  expires DateTime
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, token])
+}
+
+enum TaskPriority {
+  high
+  medium
+  low
+}
+
+enum TaskStatus {
+  archived
+  completed
+  pending
+}
+
+enum Intervals {
+  daily
+  weekly
+  biweekly
+  monthly
+}
+
+model Task {
+  id                String       @id @default(cuid())
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  title             String // wanted
+  description       String? // wanted
+  status            TaskStatus   @default(pending)
+  priority          TaskPriority // wanted
+  dueDate           DateTime // wanted
+  tags              String[] // wanted
+  isRecurring       Boolean?     @default(false) // later
+  recurringInterval Intervals? // later
+  userId            String
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// task suggestions

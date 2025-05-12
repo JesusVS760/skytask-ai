@@ -1,9 +1,5 @@
-// import { openai } from "@/lib/openai";
-import OpenAI from "openai";
+import { openai } from "@/lib/openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 export const speechService = {
   async speechToText(audioFile: File): Promise<string | undefined> {
     try {
