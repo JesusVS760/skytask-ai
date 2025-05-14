@@ -4,25 +4,35 @@ const prisma = new PrismaClient();
 
 export const taskService = {
   createTask: async (data: Task) => {
-    return prisma.task.create({
+    return await prisma.task.create({
       data,
     });
   },
   getTasks: async () => {
-    return prisma.task.findMany({
+    const tasks = await prisma.task.findMany({
       orderBy: {
         dueDate: "asc",
       },
     });
+
+    if (!tasks) throw new Error("Failed to get tasks");
+
+    return tasks;
   },
   updateTask: async (taskId: string, data: Task) => {
-    return prisma.task.update({
+    if (!taskId || !data) throw new Error("No task id or data");
+
+    const updatedTask = await prisma.task.update({
       where: { id: taskId },
       data,
     });
+
+    if (!updatedTask) throw new Error("Failed to update task");
+
+    return updatedTask;
   },
   deleteTask: async (taskId: string) => {
-    return prisma.task.delete({
+    return await prisma.task.delete({
       where: { id: taskId },
     });
   },

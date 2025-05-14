@@ -1,3 +1,4 @@
+import { Navigation } from "@/components/navigation";
 import Providers from "@/components/providers/providers";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -26,7 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navigation />
+          <main className="pt-16">{children}</main>
+        </Providers>
       </body>
     </html>
   );
