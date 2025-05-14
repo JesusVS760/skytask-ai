@@ -1,7 +1,15 @@
-import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { TableCell, TableRow } from "@/components/ui/table";
 import { Task } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ChevronRight, ChevronUp, MoreVertical } from "lucide-react";
+import { CheckCheck, Clock, Save, Trash } from "lucide-react";
 
 type TaskCardProps = {
   task: Task;
@@ -9,53 +17,63 @@ type TaskCardProps = {
 };
 
 export const TaskCard = ({ task, onClick }: TaskCardProps) => {
-  const PriorityIcon = () => {
-    switch (task.priority.toLowerCase()) {
-      case "high":
-        return <ChevronUp className="text-red-600" />;
-      case "medium":
-        return <ChevronRight className="text-amber-500" />;
-      case "low":
-        return <ChevronDown className="text-blue-500" />;
-      default:
-        return <ChevronRight className="text-gray-500" />;
-    }
-  };
-
   return (
-    <div className="flex  items-center border-b border-gray-200 hover:bg-gray-50 transition-colors text-sm">
-      <div className="px-4 py-3 cursor-pointer">
-        <Checkbox />
-      </div>
+    <TableRow className="hover:bg-gray-50 transition-colors text-sm gap-3">
+      <TableCell className="py-3">
+        <Select defaultValue={task.status}>
+          <SelectTrigger className="w-[80%]">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="done">
+              <div className="flex items-center justify-center gap-1">
+                <CheckCheck size={18} />
+                <span>Completed</span>
+              </div>
+            </SelectItem>
+            <SelectItem value="archived">
+              <div className="flex items-center justify-center gap-1">
+                <Save size={18} />
+                <span>Archived</span>
+              </div>
+            </SelectItem>
+            <SelectItem value="pending">
+              <div className="flex items-center justify-center gap-1">
+                <Clock size={18} />
+                <span>Pending</span>
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </TableCell>
 
-      <div className="font-medium text-gray-500 w-28">{`TASK-${task.id}`}</div>
-
-      <div className="flex items-center gap-3 flex-grow pr-4 py-3 truncate">
-        <span className="truncate">{task.title}</span>
-      </div>
-
-      <div className="flex items-center gap-2 w-32">
-        <span>{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
-      </div>
-
-      <div className="flex items-center gap-1 w-32">
-        <PriorityIcon />
+      <TableCell className="px-4 py-3 w-12">
         <span
           className={cn({
-            "text-red-600": task.priority.toLowerCase() === "high",
-            "text-amber-500": task.priority.toLowerCase() === "medium",
-            "text-blue-500": task.priority.toLowerCase() === "low",
+            "line-through": task.status.toString() === "done",
+          })}
+        >
+          {task.title.charAt(0).toUpperCase() + task.title.slice(1)}
+        </span>
+      </TableCell>
+
+      <TableCell className="py-3">
+        <Badge
+          className={cn({
+            "bg-red-600": task.priority.toLowerCase() === "high",
+            "bg-amber-500": task.priority.toLowerCase() === "medium",
+            "bg-blue-500": task.priority.toLowerCase() === "low",
           })}
         >
           {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
-        </span>
-      </div>
+        </Badge>
+      </TableCell>
 
-      <div className="px-4 py-3">
-        <button className="text-gray-400 hover:text-gray-600">
-          <MoreVertical size={16} />
+      <TableCell className="px-4 py-3 w-12">
+        <button className=" cursor-pointer text-black hover:text-gray-600">
+          <Trash size={18} />
         </button>
-      </div>
-    </div>
+      </TableCell>
+    </TableRow>
   );
 };

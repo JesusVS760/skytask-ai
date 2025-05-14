@@ -1,3 +1,4 @@
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Task } from "@/generated/prisma";
 import { TaskCard } from "./task-card";
 
@@ -7,14 +8,19 @@ type TaskListProps = {
 
 export const TaskList = ({ tasks }: TaskListProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
-      {/* <div className="flex flex-col items-start">
-        <CardHeader className="font-bold text-2xl">Task List</CardHeader>
-        <p>Here's a list of your tasks for this month!</p>
-      </div> */}
-      {tasks.map((task: Task) => (
-        <TaskCard key={task.id} task={task} />
-      ))}
-    </div>
+    <Table className="min-w-[800px] max-w-[1000px]">
+      <TableHeader>
+        <TableRow>
+          <TableHead>Status</TableHead>
+          <TableHead>Description</TableHead>
+          <TableHead>Priority</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {tasks.map((task: Task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </TableBody>
+    </Table>
   );
 };

@@ -32,6 +32,8 @@ export const taskService = {
     return updatedTask;
   },
   deleteTask: async (taskId: string) => {
+    if (!taskId) throw new Error("No task id");
+
     return await prisma.task.delete({
       where: { id: taskId },
     });
