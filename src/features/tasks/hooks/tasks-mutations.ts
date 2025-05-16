@@ -16,19 +16,13 @@ export const useTaskMutations = () => {
   });
 
   const updateTask = useMutation({
-    mutationFn: async ({
-      taskId,
-      data: taskData,
-    }: {
-      taskId: string;
-      data: Prisma.TaskCreateInput;
-    }) => {
-      const { data } = await axios.put(`/api/tasks/${taskId}`, taskData);
+    mutationFn: async ({ id, data: taskData }: { id: string; data: Prisma.TaskCreateInput }) => {
+      const { data } = await axios.patch(`/api/tasks/${id}`, taskData);
       return data;
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      queryClient.invalidateQueries({ queryKey: ["tasks", variables.taskId] });
+      queryClient.invalidateQueries({ queryKey: ["tasks", variables.id] });
     },
   });
 

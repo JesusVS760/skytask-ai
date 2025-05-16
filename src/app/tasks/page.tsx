@@ -7,7 +7,13 @@ import { useTaskQueries } from "@/features/tasks/hooks/tasks-queries";
 import { Task } from "@/generated/prisma";
 import { useEffect, useState } from "react";
 
-export default function TaskPage() {
+type TaskPageProps = {
+  onUpdateSuccess: (onSuccessState: boolean) => void;
+};
+
+export default function TaskPage({ onUpdateSuccess }: TaskPageProps) {
+  const [toastSuccessMsg, setToastSuccessMsg] = useState(false);
+
   const { useTasks } = useTaskQueries();
   const { data: tasks, isLoading, error } = useTasks();
 
@@ -51,7 +57,7 @@ export default function TaskPage() {
         <TaskPriorityFiltering tasks={tasks} onFilterChange={setPriorityFilteredTasks} />
       </div>
       <div className="w-full max-w-4xl ">
-        <TaskList tasks={tasksToDisplay} />
+        <TaskList onUpdateSuccess={onUpdateSuccess} tasks={tasksToDisplay} />
       </div>
     </div>
   );

@@ -43,15 +43,15 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
-export async function PATCH(req: NextRequest) {
-  try {
-    const task = await req.json();
-    const { id, ...data } = task;
+// export async function PATCH(req: NextRequest) {
+//   try {
+//     const task = await req.json();
+//     const { id, ...data } = task;
 
-    const updatedTask = await taskService.updateTask(id, data);
+//     const updatedTask = await taskService.updateTask(id, data);
 
-    return NextResponse.json({ task: updatedTask }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: "Error updating task" }, { status: 500 });
-  }
-}
+//     return NextResponse.json({ task: updatedTask }, { status: 200 });
+//   } catch (error) {
+//     return NextResponse.json({ error: "Error updating task" }, { status: 500 });
+//   }
+// }

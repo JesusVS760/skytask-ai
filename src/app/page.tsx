@@ -1,11 +1,13 @@
 "use client";
 import { TypingAnimation } from "@/components/magicui/typing-animation";
+import { Toaster } from "@/components/ui/sonner";
 import { useTaskMutations } from "@/features/tasks/hooks/tasks-mutations";
 import { useChat } from "@/features/tasks/hooks/use-chat";
 import VoiceRecorder from "@/features/voice/components/voice-recorder";
 import { useLLMMutations } from "@/features/voice/hooks/llm-mutation";
 import { parseDateTime } from "@/lib/utils";
 import { useState } from "react";
+import { toast } from "sonner";
 
 //  - Create API routes for delete & update task
 
@@ -18,6 +20,7 @@ export default function Home() {
 
   const handleTranscription = async (text: string | undefined) => {
     append({ message: text ?? "", role: "user" });
+    setIsLoading(true);
 
     await generateTask.mutateAsync(
       { text, context: messages ?? [] },
@@ -48,10 +51,14 @@ export default function Home() {
               createTask.mutate(newTask, {
                 onSuccess: () => {
                   reset();
+                  toast("Task successful created ✔️!");
                 },
               });
             }
           }
+        },
+        onSettled: () => {
+          setIsLoading(false);
         },
       }
     );
@@ -59,15 +66,19 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
+      <Toaster />
       <div className="flex flex-col items-center justify-center">
+        {isLoading && (
+          <p className="text-blue-500 animate-pulse mt-4 text-xl">Thinking... Please wait.</p>
+        )}
         <TypingAnimation className="mb-4 text-sm max-w-md text-center" duration={50}>
           {lastAgentMessage ?? ""}
         </TypingAnimation>
       </div>
       <VoiceRecorder onTranscribe={handleTranscription} />
-      <div className="p-3 font-semibold">
+      {/* <div className="p-3 font-semibold">
         {isLoading && <p className="text-blue-500 animate-pulse">Transcribing...</p>}
-      </div>
+      </div> */}
     </div>
   );
 }

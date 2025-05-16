@@ -7,25 +7,55 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Task } from "@/generated/prisma";
+import { Task, TaskStatus } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
 import { CheckCheck, Clock, Save, Trash } from "lucide-react";
+import { toast } from "sonner";
+import { useTaskMutations } from "../hooks/tasks-mutations";
 
 type TaskCardProps = {
   task: Task;
-  onClick?: () => void;
+  onUpdateSuccess: (successState: boolean) => void;
 };
 
-export const TaskCard = ({ task, onClick }: TaskCardProps) => {
+export const TaskCard = ({ task, onUpdateSuccess }: TaskCardProps) => {
+  const { updateTask } = useTaskMutations();
+  const { id, status } = task;
+
+  const handleUpdate = (value: string) => {
+    updateTask.mutate(
+      {
+        id,
+        data: {
+          status: value as TaskStatus,
+          title: task.title,
+          dueDate: task.dueDate,
+          user: {
+            create: undefined,
+            connectOrCreate: undefined,
+            connect: undefined,
+          },
+          priority: "high",
+        },
+      },
+      {
+        onSuccess: () => {
+          toast(`Successful updated status to ${status} ✔️!`);
+          onUpdateSuccess(true);
+        },
+      }
+    );
+  };
+
   return (
     <TableRow className="hover:bg-gray-50 transition-colors text-sm gap-3">
       <TableCell className="py-3">
-        <Select defaultValue={task.status}>
+        <Select defaultValue={task.status} onValueChange={(value) => handleUpdate(value)}>
           <SelectTrigger className="w-[80%]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="done">
+            <SelectItem value="completed">
               <div className="flex items-center justify-center gap-1">
                 <CheckCheck size={18} />
                 <span>Completed</span>
