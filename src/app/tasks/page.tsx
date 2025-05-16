@@ -6,13 +6,14 @@ import TaskSearchByName from "@/features/tasks/components/task-search-by-name";
 import { useTaskQueries } from "@/features/tasks/hooks/tasks-queries";
 import { Task } from "@/generated/prisma";
 import { useEffect, useState } from "react";
+import { toast, Toaster } from "sonner";
 
 type TaskPageProps = {
   onUpdateSuccess: (onSuccessState: boolean) => void;
 };
 
 export default function TaskPage({ onUpdateSuccess }: TaskPageProps) {
-  const [toastSuccessMsg, setToastSuccessMsg] = useState(false);
+  const [toastSuccessMsg, setToastSuccessMsg] = useState<boolean | null>(false);
 
   const { useTasks } = useTaskQueries();
   const { data: tasks, isLoading, error } = useTasks();
@@ -20,6 +21,12 @@ export default function TaskPage({ onUpdateSuccess }: TaskPageProps) {
   const [priorityFilteredTasks, setPriorityFilteredTasks] = useState<Task[]>([]);
   const [searchFilteredTasks, setSearchFilteredTasks] = useState<Task[]>([]);
   const [tasksToDisplay, setTasksToDisplay] = useState<Task[]>([]);
+
+  useEffect(() => {
+    if (toastSuccessMsg) {
+      toast("Task successful created ✔️!");
+    }
+  }, [toastSuccessMsg]);
 
   useEffect(() => {
     const priorityIds = new Set(priorityFilteredTasks.map((task) => task.id));
@@ -51,13 +58,14 @@ export default function TaskPage({ onUpdateSuccess }: TaskPageProps) {
 
   return (
     <div className="flex flex-col items-center justify-center mt-6 ">
+      <Toaster />
       <h1 className="flex text-2xl  font-bold p-12">Your Tasks</h1>
       <div className="flex flex-row gap-10">
         <TaskSearchByName tasks={tasks} onFilterChange={setSearchFilteredTasks} />
         <TaskPriorityFiltering tasks={tasks} onFilterChange={setPriorityFilteredTasks} />
       </div>
       <div className="w-full max-w-4xl ">
-        <TaskList onUpdateSuccess={onUpdateSuccess} tasks={tasksToDisplay} />
+        <TaskList setToastSuccessMsg={setToastSuccessMsg} tasks={tasksToDisplay} />
       </div>
     </div>
   );

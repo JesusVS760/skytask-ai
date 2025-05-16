@@ -15,10 +15,10 @@ import { useTaskMutations } from "../hooks/tasks-mutations";
 
 type TaskCardProps = {
   task: Task;
-  onUpdateSuccess: (successState: boolean) => void;
+  setToastSuccessMsg: (msg: boolean) => void;
 };
 
-export const TaskCard = ({ task, onUpdateSuccess }: TaskCardProps) => {
+export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
   const { updateTask } = useTaskMutations();
   const { id, status } = task;
 
@@ -41,7 +41,7 @@ export const TaskCard = ({ task, onUpdateSuccess }: TaskCardProps) => {
       {
         onSuccess: () => {
           toast(`Successful updated status to ${status} ✔️!`);
-          onUpdateSuccess(true);
+          setToastSuccessMsg(true);
         },
       }
     );
