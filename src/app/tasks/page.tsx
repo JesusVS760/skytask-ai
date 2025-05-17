@@ -8,11 +8,7 @@ import { Task } from "@/generated/prisma";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 
-type TaskPageProps = {
-  onUpdateSuccess: (onSuccessState: boolean) => void;
-};
-
-export default function TaskPage({ onUpdateSuccess }: TaskPageProps) {
+export default function TaskPage() {
   const [toastSuccessMsg, setToastSuccessMsg] = useState<boolean | null>(false);
 
   const { useTasks } = useTaskQueries();
@@ -24,7 +20,7 @@ export default function TaskPage({ onUpdateSuccess }: TaskPageProps) {
 
   useEffect(() => {
     if (toastSuccessMsg) {
-      toast("Task successful created ✔️!");
+      toast("Task successful updated ✔️!");
     }
   }, [toastSuccessMsg]);
 

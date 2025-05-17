@@ -28,6 +28,7 @@ export const useTaskMutations = () => {
 
   const deleteTask = useMutation({
     mutationFn: async (taskId: string) => {
+      console.log(taskId);
       const { data } = await axios.delete(`/api/tasks/${taskId}`);
       return data;
     },

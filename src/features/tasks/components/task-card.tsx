@@ -10,6 +10,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Task, TaskStatus } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
 import { CheckCheck, Clock, Save, Trash } from "lucide-react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { useTaskMutations } from "../hooks/tasks-mutations";
 
@@ -19,8 +20,10 @@ type TaskCardProps = {
 };
 
 export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
-  const { updateTask } = useTaskMutations();
+  const { updateTask, deleteTask } = useTaskMutations();
   const { id, status } = task;
+
+  useEffect(() => {}, [status]);
 
   const handleUpdate = (value: string) => {
     updateTask.mutate(
@@ -45,6 +48,14 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
         },
       }
     );
+  };
+
+  const handleDelete = () => {
+    deleteTask.mutate(task.id, {
+      onSuccess: () => {
+        toast("Task Successful deleted ✔️!");
+      },
+    });
   };
 
   return (
@@ -80,7 +91,7 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
       <TableCell className="px-4 py-3 w-12">
         <span
           className={cn({
-            "line-through": task.status.toString() === "done",
+            "line-through": task.status.toString() === "completed",
           })}
         >
           {task.title.charAt(0).toUpperCase() + task.title.slice(1)}
@@ -99,7 +110,7 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
         </Badge>
       </TableCell>
 
-      <TableCell className="px-4 py-3 w-12">
+      <TableCell onClick={handleDelete} className="px-4 py-3 w-12">
         <button className=" cursor-pointer text-black hover:text-gray-600">
           <Trash size={18} />
         </button>
