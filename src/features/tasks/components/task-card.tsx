@@ -10,7 +10,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Task, TaskStatus } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
 import { CheckCheck, Clock, Save, Trash } from "lucide-react";
-import { useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useTaskMutations } from "../hooks/tasks-mutations";
 
@@ -21,30 +21,22 @@ type TaskCardProps = {
 
 export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
   const { updateTask, deleteTask } = useTaskMutations();
-  const { id, status } = task;
-
-  useEffect(() => {}, [status]);
+  const [localStatus, setLocalStatus] = useState<TaskStatus>(task.status);
 
   const handleUpdate = (value: string) => {
     updateTask.mutate(
       {
-        id,
+        id: task.id,
         data: {
+          ...task,
           status: value as TaskStatus,
-          title: task.title,
-          dueDate: task.dueDate,
-          user: {
-            create: undefined,
-            connectOrCreate: undefined,
-            connect: undefined,
-          },
-          priority: "high",
         },
       },
       {
         onSuccess: () => {
-          toast(`Successful updated status to ${status} ✔️!`);
           setToastSuccessMsg(true);
+          setLocalStatus(value as TaskStatus);
+          toast(`Successful updated status to ${value} ✔️!`);
         },
       }
     );
@@ -91,7 +83,7 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
       <TableCell className="px-4 py-3 w-12">
         <span
           className={cn({
-            "line-through": task.status.toString() === "completed",
+            "line-through": localStatus.toString() === "completed",
           })}
         >
           {task.title.charAt(0).toUpperCase() + task.title.slice(1)}

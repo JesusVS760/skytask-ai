@@ -16,7 +16,7 @@ export const useTaskMutations = () => {
   });
 
   const updateTask = useMutation({
-    mutationFn: async ({ id, data: taskData }: { id: string; data: Prisma.TaskCreateInput }) => {
+    mutationFn: async ({ id, data: taskData }: { id: string; data: Prisma.TaskUpdateInput }) => {
       const { data } = await axios.patch(`/api/tasks/${id}`, taskData);
       return data;
     },
