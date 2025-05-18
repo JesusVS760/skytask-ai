@@ -9,7 +9,10 @@ import { parseDateTime } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
 
-//  - Create API routes for delete & update task
+// Create a feature/component to confirm deletion of tasks
+// Add a bulk delete api route and front-end mutation
+// Add due date cell in Task Table
+// Find and add calander feature that works
 
 export default function Home() {
   const { messages, append, reset, lastAgentMessage } = useChat();

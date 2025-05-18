@@ -13,6 +13,7 @@ import { CheckCheck, Clock, Save, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTaskMutations } from "../hooks/tasks-mutations";
+import { useConfirm } from "../hooks/use-confirm";
 
 type TaskCardProps = {
   task: Task;
@@ -22,6 +23,7 @@ type TaskCardProps = {
 export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
   const { updateTask, deleteTask } = useTaskMutations();
   const [localStatus, setLocalStatus] = useState<TaskStatus>(task.status);
+  const [ConfirmDialog, confirm] = useConfirm("Are you sure", "Are are about to delete this task");
 
   const handleUpdate = (value: string) => {
     updateTask.mutate(
@@ -42,16 +44,20 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
     );
   };
 
-  const handleDelete = () => {
-    deleteTask.mutate(task.id, {
-      onSuccess: () => {
-        toast("Task Successful deleted ✔️!");
-      },
-    });
+  const handleDelete = async () => {
+    const ok = await confirm();
+    if (ok) {
+      deleteTask.mutate(task.id, {
+        onSuccess: () => {
+          toast("Task Successful deleted ✔️!");
+        },
+      });
+    }
   };
 
   return (
     <TableRow className="hover:bg-gray-50 transition-colors text-sm gap-3">
+      <ConfirmDialog />
       <TableCell className="py-3">
         <Select defaultValue={task.status} onValueChange={(value) => handleUpdate(value)}>
           <SelectTrigger className="w-[80%]">
