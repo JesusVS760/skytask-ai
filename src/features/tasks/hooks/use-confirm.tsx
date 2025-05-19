@@ -22,6 +22,7 @@ export const useConfirm = (
 
   const handleConfirm = () => {
     promise?.resolve(true);
+    handleClose();
   };
   const handleCancel = () => {
     promise?.resolve(false);
@@ -31,20 +32,18 @@ export const useConfirm = (
   const ConfirmDialog = () => (
     <Dialog open={promise !== null}>
       <DialogContent>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{message}</DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="pt-2">
-            <Button onClick={handleCancel} variant="outline">
-              Cancel
-            </Button>
-            <Button onClick={handleConfirm} variant="outline">
-              Confirm
-            </Button>
-          </DialogFooter>
-        </DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{message}</DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="pt-2">
+          <Button onClick={handleCancel} variant="outline">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirm} variant="outline">
+            Confirm
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

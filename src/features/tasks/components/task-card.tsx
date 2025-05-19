@@ -23,7 +23,10 @@ type TaskCardProps = {
 export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
   const { updateTask, deleteTask } = useTaskMutations();
   const [localStatus, setLocalStatus] = useState<TaskStatus>(task.status);
-  const [ConfirmDialog, confirm] = useConfirm("Are you sure", "Are are about to delete this task");
+  const [ConfirmDialog, confirm] = useConfirm(
+    "Are you sure 🤔?",
+    "You are about to delete this task"
+  );
 
   const handleUpdate = (value: string) => {
     updateTask.mutate(
@@ -54,7 +57,16 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
       });
     }
   };
-
+  const isoString = task.dueDate.toString();
+  const readable = new Date(isoString).toLocaleString("en-US", {
+    weekday: "short",
+    // year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
   return (
     <TableRow className="hover:bg-gray-50 transition-colors text-sm gap-3">
       <ConfirmDialog />
@@ -107,6 +119,8 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
           {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
         </Badge>
       </TableCell>
+
+      <TableCell>{readable}</TableCell>
 
       <TableCell onClick={handleDelete} className="px-4 py-3 w-12">
         <button className=" cursor-pointer text-black hover:text-gray-600">

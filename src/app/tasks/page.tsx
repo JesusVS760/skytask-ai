@@ -1,8 +1,10 @@
 "use client";
 
+import { TaskCalendar } from "@/features/tasks/components/task-calendar";
 import TaskPriorityFiltering from "@/features/tasks/components/task-filter-priority";
 import { TaskList } from "@/features/tasks/components/task-list";
 import TaskSearchByName from "@/features/tasks/components/task-search-by-name";
+import TaskView from "@/features/tasks/components/task-view";
 import { useTaskQueries } from "@/features/tasks/hooks/tasks-queries";
 import { Task } from "@/generated/prisma";
 import { useEffect, useState } from "react";
@@ -10,13 +12,13 @@ import { toast, Toaster } from "sonner";
 
 export default function TaskPage() {
   const [toastSuccessMsg, setToastSuccessMsg] = useState<boolean | null>(false);
-
-  const { useTasks } = useTaskQueries();
-  const { data: tasks, isLoading, error } = useTasks();
-
   const [priorityFilteredTasks, setPriorityFilteredTasks] = useState<Task[]>([]);
   const [searchFilteredTasks, setSearchFilteredTasks] = useState<Task[]>([]);
   const [tasksToDisplay, setTasksToDisplay] = useState<Task[]>([]);
+  const [view, setView] = useState("Table");
+
+  const { useTasks } = useTaskQueries();
+  const { data: tasks, isLoading, error } = useTasks();
 
   useEffect(() => {
     if (toastSuccessMsg) {
@@ -56,12 +58,23 @@ export default function TaskPage() {
     <div className="flex flex-col items-center justify-center mt-6 ">
       <Toaster />
       <h1 className="flex text-2xl  font-bold p-12">Your Tasks</h1>
-      <div className="flex flex-row gap-10">
-        <TaskSearchByName tasks={tasks} onFilterChange={setSearchFilteredTasks} />
-        <TaskPriorityFiltering tasks={tasks} onFilterChange={setPriorityFilteredTasks} />
+      <div className="flex flex-row items-center justify-center gap-10">
+        <div className="flex-1">
+          <TaskSearchByName tasks={tasks} onFilterChange={setSearchFilteredTasks} />
+        </div>
+        <div className="flex-1">
+          <TaskPriorityFiltering tasks={tasks} onFilterChange={setPriorityFilteredTasks} />
+        </div>
+        <div className="flex-1">
+          <TaskView taskView={view} onChange={setView} />
+        </div>
       </div>
-      <div className="w-full max-w-4xl ">
-        <TaskList setToastSuccessMsg={setToastSuccessMsg} tasks={tasksToDisplay} />
+      <div>
+        {view === "Table" ? (
+          <TaskList tasks={tasksToDisplay} setToastSuccessMsg={setToastSuccessMsg} />
+        ) : (
+          <TaskCalendar tasks={tasksToDisplay} />
+        )}
       </div>
     </div>
   );

@@ -9,9 +9,10 @@ import { parseDateTime } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
 
-// Create a feature/component to confirm deletion of tasks
+// Create a feature/component to confirm deletion of tasks (DONE!)
+// Add due date cell in Task Table (DONE!)
+
 // Add a bulk delete api route and front-end mutation
-// Add due date cell in Task Table
 // Find and add calander feature that works
 
 export default function Home() {
