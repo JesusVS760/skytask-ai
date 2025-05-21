@@ -29,7 +29,7 @@ export default function EditableTaskRow({ task, onSave, onCancel }: EditableTask
   return (
     <TableRow className="hover:bg-gray-50 text-sm">
       <TableCell>
-        <Badge>{task.status}</Badge>
+        <Badge>{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</Badge>
       </TableCell>
       <TableCell>
         <input
@@ -64,10 +64,16 @@ export default function EditableTaskRow({ task, onSave, onCancel }: EditableTask
       </TableCell>
       <TableCell colSpan={2}>
         <div className="flex gap-2">
-          <button onClick={handleSubmit} className="text-green-600 hover:underline">
+          <button
+            onClick={handleSubmit}
+            className="cursor-pointer bg-green-600 text-white font-semibold border p-2 rounded"
+          >
             Save
           </button>
-          <button onClick={onCancel} className="text-red-500 hover:underline">
+          <button
+            onClick={onCancel}
+            className="bg-red-500  text-white font-semibold border p-2 rounded cursor-pointer"
+          >
             Cancel
           </button>
         </div>

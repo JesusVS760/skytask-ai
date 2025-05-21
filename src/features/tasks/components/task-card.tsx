@@ -9,17 +9,22 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Task, TaskStatus } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { CheckCheck, Clock, Ellipsis, Save, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTaskMutations } from "../hooks/tasks-mutations";
 import { useConfirm } from "../hooks/use-confirm";
+
 import EditableTaskRow from "./task-editable-row";
 
 type TaskCardProps = {
   task: Task;
   setToastSuccessMsg: (msg: boolean) => void;
 };
+
+const MotionTableRow = motion(TableRow);
+const MotionButton = motion.button;
 
 export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
   const { updateTask, deleteTask } = useTaskMutations();
@@ -30,9 +35,6 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
     "You are about to delete this task"
   );
 
-  const handleEdit = () => {
-    console.log("editing");
-  };
   const handleUpdate = (value: string) => {
     updateTask.mutate(
       {
@@ -87,16 +89,22 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
           },
           {
             onSuccess: () => {
-              setIsEditing(false);
               setToastSuccessMsg(true);
               toast("Task updated successfully ✔️!");
+              setIsEditing(false);
             },
           }
         );
       }}
     />
   ) : (
-    <TableRow className="hover:bg-gray-50 transition-colors text-sm gap-3">
+    <MotionTableRow
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
+      className="hover:bg-gray-50 transition-colors text-sm gap-3"
+    >
       <ConfirmDialog />
       <TableCell className="py-3">
         <Select defaultValue={task.status} onValueChange={(value) => handleUpdate(value)}>
@@ -151,15 +159,24 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
       <TableCell>{readable}</TableCell>
 
       <TableCell>
-        <div className="cursor-pointer" onClick={() => setIsEditing(true)}>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="cursor-pointer"
+          onClick={() => setIsEditing(true)}
+        >
           <Ellipsis />
-        </div>
+        </motion.div>
       </TableCell>
       <TableCell onClick={handleDelete} className="px-4 py-3 w-12">
-        <button className=" cursor-pointer text-black hover:text-gray-600">
+        <MotionButton
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className=" cursor-pointer text-black hover:text-gray-600"
+        >
           <Trash size={18} />
-        </button>
+        </MotionButton>
       </TableCell>
-    </TableRow>
+    </MotionTableRow>
   );
 };
