@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Calendar, Table } from "lucide-react";
 
 type TaskViewProps = {
   taskView: string;
@@ -18,11 +19,21 @@ export default function TaskView({ taskView, onChange }: TaskViewProps) {
       <Label htmlFor="priority-filter">Task View:</Label>
       <Select value={taskView} onValueChange={onChange}>
         <SelectTrigger>
-          <SelectValue placeholder="Task Manager View" />
+          <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="Table">Table</SelectItem>
-          <SelectItem value="Calendar">Calendar</SelectItem>
+          <SelectItem value="Table">
+            <div className="flex items-center gap-1">
+              <Table size={10} />
+              Table
+            </div>
+          </SelectItem>
+          <SelectItem value="Calendar">
+            <div className="flex items-center gap-1">
+              <Calendar size={10} />
+              Calendar
+            </div>
+          </SelectItem>
         </SelectContent>
       </Select>
     </div>

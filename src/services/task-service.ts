@@ -38,4 +38,7 @@ export const taskService = {
       where: { id: taskId },
     });
   },
+  deleteTasks: async () => {
+    return await prisma.user.deleteMany({});
+  },
 };

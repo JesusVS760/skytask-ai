@@ -37,5 +37,15 @@ export const useTaskMutations = () => {
     },
   });
 
-  return { createTask, updateTask, deleteTask };
+  const deleteTasks = useMutation({
+    mutationFn: async () => {
+      const { data } = await axios.delete("/api/tasks");
+      return data;
+    },
+    onSuccess: () => {
+      console.log("All tasks deleted successfully");
+    },
+  });
+
+  return { createTask, updateTask, deleteTask, deleteTasks };
 };

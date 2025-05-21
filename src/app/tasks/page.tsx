@@ -15,10 +15,9 @@ export default function TaskPage() {
   const [priorityFilteredTasks, setPriorityFilteredTasks] = useState<Task[]>([]);
   const [searchFilteredTasks, setSearchFilteredTasks] = useState<Task[]>([]);
   const [tasksToDisplay, setTasksToDisplay] = useState<Task[]>([]);
-  const [view, setView] = useState("Table");
-
   const { useTasks } = useTaskQueries();
   const { data: tasks, isLoading, error } = useTasks();
+  const [view, setView] = useState("Table");
 
   useEffect(() => {
     if (toastSuccessMsg) {

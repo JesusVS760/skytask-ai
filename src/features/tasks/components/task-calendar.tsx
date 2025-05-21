@@ -1,9 +1,9 @@
 "use client";
-
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Task } from "@/generated/prisma";
+import { cn } from "@/lib/utils";
 import { format, isSameDay } from "date-fns";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ export function TaskCalendar({ tasks }: { tasks: Task[] }) {
     : [];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[350px_1fr] gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-[350px_1fr] gap-4">
       <div>
         <Calendar
           mode="single"
@@ -39,7 +39,7 @@ export function TaskCalendar({ tasks }: { tasks: Task[] }) {
           }}
         />
       </div>
-      <div>
+      <div className="min-w-[350px]">
         <Card>
           <CardHeader>
             <CardTitle>
@@ -55,7 +55,15 @@ export function TaskCalendar({ tasks }: { tasks: Task[] }) {
                     className="flex items-center justify-between p-3 border rounded-lg"
                   >
                     <span>{task.title}</span>
-                    <Badge>{task.status}</Badge>
+                    <Badge
+                      className={cn({
+                        "bg-red-600": task.priority.toLowerCase() === "high",
+                        "bg-amber-500": task.priority.toLowerCase() === "medium",
+                        "bg-blue-500": task.priority.toLowerCase() === "low",
+                      })}
+                    >
+                      {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                    </Badge>
                   </li>
                 ))}
               </ul>

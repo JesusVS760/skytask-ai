@@ -9,11 +9,12 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Task, TaskStatus } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
-import { CheckCheck, Clock, Save, Trash } from "lucide-react";
+import { CheckCheck, Clock, Ellipsis, Save, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTaskMutations } from "../hooks/tasks-mutations";
 import { useConfirm } from "../hooks/use-confirm";
+import EditableTaskRow from "./task-editable-row";
 
 type TaskCardProps = {
   task: Task;
@@ -22,12 +23,16 @@ type TaskCardProps = {
 
 export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
   const { updateTask, deleteTask } = useTaskMutations();
+  const [isEditing, setIsEditing] = useState(false);
   const [localStatus, setLocalStatus] = useState<TaskStatus>(task.status);
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure 🤔?",
     "You are about to delete this task"
   );
 
+  const handleEdit = () => {
+    console.log("editing");
+  };
   const handleUpdate = (value: string) => {
     updateTask.mutate(
       {
@@ -67,7 +72,30 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
     minute: "2-digit",
     hour12: true,
   });
-  return (
+  return isEditing ? (
+    <EditableTaskRow
+      task={task}
+      onCancel={() => setIsEditing(false)}
+      onSave={(updatedTask) => {
+        updateTask.mutate(
+          {
+            id: task.id,
+            data: {
+              ...task,
+              ...updatedTask,
+            },
+          },
+          {
+            onSuccess: () => {
+              setIsEditing(false);
+              setToastSuccessMsg(true);
+              toast("Task updated successfully ✔️!");
+            },
+          }
+        );
+      }}
+    />
+  ) : (
     <TableRow className="hover:bg-gray-50 transition-colors text-sm gap-3">
       <ConfirmDialog />
       <TableCell className="py-3">
@@ -122,6 +150,11 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
 
       <TableCell>{readable}</TableCell>
 
+      <TableCell>
+        <div className="cursor-pointer" onClick={() => setIsEditing(true)}>
+          <Ellipsis />
+        </div>
+      </TableCell>
       <TableCell onClick={handleDelete} className="px-4 py-3 w-12">
         <button className=" cursor-pointer text-black hover:text-gray-600">
           <Trash size={18} />

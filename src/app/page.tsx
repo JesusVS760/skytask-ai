@@ -11,9 +11,10 @@ import { toast } from "sonner";
 
 // Create a feature/component to confirm deletion of tasks (DONE!)
 // Add due date cell in Task Table (DONE!)
+// Find and add calander feature that works (DONE!)
+// Add a bulk delete api route and front-end mutation ("ADD Later if UI makes sense to add")
 
-// Add a bulk delete api route and front-end mutation
-// Find and add calander feature that works
+//Create a editing for description, due date, and priority level
 
 export default function Home() {
   const { messages, append, reset, lastAgentMessage } = useChat();
@@ -80,9 +81,6 @@ export default function Home() {
         </TypingAnimation>
       </div>
       <VoiceRecorder onTranscribe={handleTranscription} />
-      {/* <div className="p-3 font-semibold">
-        {isLoading && <p className="text-blue-500 animate-pulse">Transcribing...</p>}
-      </div> */}
     </div>
   );
 }
