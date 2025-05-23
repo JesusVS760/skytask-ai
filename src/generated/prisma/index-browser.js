@@ -125,21 +125,30 @@ exports.Prisma.UserScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   hashedPassword: 'hashedPassword',
-  email: 'email'
+  email: 'email',
+  emailVerified: 'emailVerified',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
   sessionToken: 'sessionToken',
   userId: 'userId',
-  expires: 'expires'
+  expires: 'expires',
+  createdAt: 'createdAt',
+  lastUsed: 'lastUsed',
+  userAgent: 'userAgent'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
+  id: 'id',
   code: 'code',
   userId: 'userId',
   token: 'token',
-  expires: 'expires'
+  type: 'type',
+  expires: 'expires',
+  used: 'used',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.TaskScalarFieldEnum = {
@@ -171,6 +180,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.VerificationType = exports.$Enums.VerificationType = {
+  EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  TWO_FACTOR: 'TWO_FACTOR'
+};
+
 exports.TaskStatus = exports.$Enums.TaskStatus = {
   archived: 'archived',
   completed: 'completed',

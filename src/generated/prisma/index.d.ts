@@ -38,7 +38,16 @@ export type Task = $Result.DefaultSelection<Prisma.$TaskPayload>
  * Enums
  */
 export namespace $Enums {
-  export const TaskPriority: {
+  export const VerificationType: {
+  EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  TWO_FACTOR: 'TWO_FACTOR'
+};
+
+export type VerificationType = (typeof VerificationType)[keyof typeof VerificationType]
+
+
+export const TaskPriority: {
   high: 'high',
   medium: 'medium',
   low: 'low'
@@ -66,6 +75,10 @@ export const Intervals: {
 export type Intervals = (typeof Intervals)[keyof typeof Intervals]
 
 }
+
+export type VerificationType = $Enums.VerificationType
+
+export const VerificationType: typeof $Enums.VerificationType
 
 export type TaskPriority = $Enums.TaskPriority
 
@@ -1251,6 +1264,8 @@ export namespace Prisma {
     lastName: string | null
     hashedPassword: string | null
     email: string | null
+    emailVerified: boolean | null
+    createdAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1259,6 +1274,8 @@ export namespace Prisma {
     lastName: string | null
     hashedPassword: string | null
     email: string | null
+    emailVerified: boolean | null
+    createdAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1267,6 +1284,8 @@ export namespace Prisma {
     lastName: number
     hashedPassword: number
     email: number
+    emailVerified: number
+    createdAt: number
     _all: number
   }
 
@@ -1277,6 +1296,8 @@ export namespace Prisma {
     lastName?: true
     hashedPassword?: true
     email?: true
+    emailVerified?: true
+    createdAt?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1285,6 +1306,8 @@ export namespace Prisma {
     lastName?: true
     hashedPassword?: true
     email?: true
+    emailVerified?: true
+    createdAt?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1293,6 +1316,8 @@ export namespace Prisma {
     lastName?: true
     hashedPassword?: true
     email?: true
+    emailVerified?: true
+    createdAt?: true
     _all?: true
   }
 
@@ -1374,6 +1399,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified: boolean
+    createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1399,6 +1426,8 @@ export namespace Prisma {
     lastName?: boolean
     hashedPassword?: boolean
     email?: boolean
+    emailVerified?: boolean
+    createdAt?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
     verificationCodes?: boolean | User$verificationCodesArgs<ExtArgs>
@@ -1411,6 +1440,8 @@ export namespace Prisma {
     lastName?: boolean
     hashedPassword?: boolean
     email?: boolean
+    emailVerified?: boolean
+    createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1419,6 +1450,8 @@ export namespace Prisma {
     lastName?: boolean
     hashedPassword?: boolean
     email?: boolean
+    emailVerified?: boolean
+    createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1427,9 +1460,11 @@ export namespace Prisma {
     lastName?: boolean
     hashedPassword?: boolean
     email?: boolean
+    emailVerified?: boolean
+    createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "hashedPassword" | "email", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "hashedPassword" | "email" | "emailVerified" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
@@ -1452,6 +1487,8 @@ export namespace Prisma {
       lastName: string
       hashedPassword: string
       email: string
+      emailVerified: boolean
+      createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1883,6 +1920,8 @@ export namespace Prisma {
     readonly lastName: FieldRef<"User", 'String'>
     readonly hashedPassword: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
+    readonly emailVerified: FieldRef<"User", 'Boolean'>
+    readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -2376,6 +2415,9 @@ export namespace Prisma {
     sessionToken: string | null
     userId: string | null
     expires: Date | null
+    createdAt: Date | null
+    lastUsed: Date | null
+    userAgent: string | null
   }
 
   export type SessionMaxAggregateOutputType = {
@@ -2383,6 +2425,9 @@ export namespace Prisma {
     sessionToken: string | null
     userId: string | null
     expires: Date | null
+    createdAt: Date | null
+    lastUsed: Date | null
+    userAgent: string | null
   }
 
   export type SessionCountAggregateOutputType = {
@@ -2390,6 +2435,9 @@ export namespace Prisma {
     sessionToken: number
     userId: number
     expires: number
+    createdAt: number
+    lastUsed: number
+    userAgent: number
     _all: number
   }
 
@@ -2399,6 +2447,9 @@ export namespace Prisma {
     sessionToken?: true
     userId?: true
     expires?: true
+    createdAt?: true
+    lastUsed?: true
+    userAgent?: true
   }
 
   export type SessionMaxAggregateInputType = {
@@ -2406,6 +2457,9 @@ export namespace Prisma {
     sessionToken?: true
     userId?: true
     expires?: true
+    createdAt?: true
+    lastUsed?: true
+    userAgent?: true
   }
 
   export type SessionCountAggregateInputType = {
@@ -2413,6 +2467,9 @@ export namespace Prisma {
     sessionToken?: true
     userId?: true
     expires?: true
+    createdAt?: true
+    lastUsed?: true
+    userAgent?: true
     _all?: true
   }
 
@@ -2493,6 +2550,9 @@ export namespace Prisma {
     sessionToken: string
     userId: string
     expires: Date
+    createdAt: Date
+    lastUsed: Date
+    userAgent: string | null
     _count: SessionCountAggregateOutputType | null
     _min: SessionMinAggregateOutputType | null
     _max: SessionMaxAggregateOutputType | null
@@ -2517,6 +2577,9 @@ export namespace Prisma {
     sessionToken?: boolean
     userId?: boolean
     expires?: boolean
+    createdAt?: boolean
+    lastUsed?: boolean
+    userAgent?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
@@ -2525,6 +2588,9 @@ export namespace Prisma {
     sessionToken?: boolean
     userId?: boolean
     expires?: boolean
+    createdAt?: boolean
+    lastUsed?: boolean
+    userAgent?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
@@ -2533,6 +2599,9 @@ export namespace Prisma {
     sessionToken?: boolean
     userId?: boolean
     expires?: boolean
+    createdAt?: boolean
+    lastUsed?: boolean
+    userAgent?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
@@ -2541,9 +2610,12 @@ export namespace Prisma {
     sessionToken?: boolean
     userId?: boolean
     expires?: boolean
+    createdAt?: boolean
+    lastUsed?: boolean
+    userAgent?: boolean
   }
 
-  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionToken" | "userId" | "expires", ExtArgs["result"]["session"]>
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionToken" | "userId" | "expires" | "createdAt" | "lastUsed" | "userAgent", ExtArgs["result"]["session"]>
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -2564,6 +2636,9 @@ export namespace Prisma {
       sessionToken: string
       userId: string
       expires: Date
+      createdAt: Date
+      lastUsed: Date
+      userAgent: string | null
     }, ExtArgs["result"]["session"]>
     composites: {}
   }
@@ -2992,6 +3067,9 @@ export namespace Prisma {
     readonly sessionToken: FieldRef<"Session", 'String'>
     readonly userId: FieldRef<"Session", 'String'>
     readonly expires: FieldRef<"Session", 'DateTime'>
+    readonly createdAt: FieldRef<"Session", 'DateTime'>
+    readonly lastUsed: FieldRef<"Session", 'DateTime'>
+    readonly userAgent: FieldRef<"Session", 'String'>
   }
     
 
@@ -3417,47 +3495,71 @@ export namespace Prisma {
   }
 
   export type VerificationTokenMinAggregateOutputType = {
+    id: string | null
     code: string | null
     userId: string | null
     token: string | null
+    type: $Enums.VerificationType | null
     expires: Date | null
+    used: boolean | null
+    createdAt: Date | null
   }
 
   export type VerificationTokenMaxAggregateOutputType = {
+    id: string | null
     code: string | null
     userId: string | null
     token: string | null
+    type: $Enums.VerificationType | null
     expires: Date | null
+    used: boolean | null
+    createdAt: Date | null
   }
 
   export type VerificationTokenCountAggregateOutputType = {
+    id: number
     code: number
     userId: number
     token: number
+    type: number
     expires: number
+    used: number
+    createdAt: number
     _all: number
   }
 
 
   export type VerificationTokenMinAggregateInputType = {
+    id?: true
     code?: true
     userId?: true
     token?: true
+    type?: true
     expires?: true
+    used?: true
+    createdAt?: true
   }
 
   export type VerificationTokenMaxAggregateInputType = {
+    id?: true
     code?: true
     userId?: true
     token?: true
+    type?: true
     expires?: true
+    used?: true
+    createdAt?: true
   }
 
   export type VerificationTokenCountAggregateInputType = {
+    id?: true
     code?: true
     userId?: true
     token?: true
+    type?: true
     expires?: true
+    used?: true
+    createdAt?: true
     _all?: true
   }
 
@@ -3534,10 +3636,14 @@ export namespace Prisma {
   }
 
   export type VerificationTokenGroupByOutputType = {
+    id: string
     code: string
     userId: string
     token: string
+    type: $Enums.VerificationType
     expires: Date
+    used: boolean
+    createdAt: Date
     _count: VerificationTokenCountAggregateOutputType | null
     _min: VerificationTokenMinAggregateOutputType | null
     _max: VerificationTokenMaxAggregateOutputType | null
@@ -3558,37 +3664,53 @@ export namespace Prisma {
 
 
   export type VerificationTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     code?: boolean
     userId?: boolean
     token?: boolean
+    type?: boolean
     expires?: boolean
+    used?: boolean
+    createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["verificationToken"]>
 
   export type VerificationTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     code?: boolean
     userId?: boolean
     token?: boolean
+    type?: boolean
     expires?: boolean
+    used?: boolean
+    createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["verificationToken"]>
 
   export type VerificationTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     code?: boolean
     userId?: boolean
     token?: boolean
+    type?: boolean
     expires?: boolean
+    used?: boolean
+    createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["verificationToken"]>
 
   export type VerificationTokenSelectScalar = {
+    id?: boolean
     code?: boolean
     userId?: boolean
     token?: boolean
+    type?: boolean
     expires?: boolean
+    used?: boolean
+    createdAt?: boolean
   }
 
-  export type VerificationTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"code" | "userId" | "token" | "expires", ExtArgs["result"]["verificationToken"]>
+  export type VerificationTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "userId" | "token" | "type" | "expires" | "used" | "createdAt", ExtArgs["result"]["verificationToken"]>
   export type VerificationTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3605,10 +3727,14 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
+      id: string
       code: string
       userId: string
       token: string
+      type: $Enums.VerificationType
       expires: Date
+      used: boolean
+      createdAt: Date
     }, ExtArgs["result"]["verificationToken"]>
     composites: {}
   }
@@ -3692,8 +3818,8 @@ export namespace Prisma {
      * // Get first 10 VerificationTokens
      * const verificationTokens = await prisma.verificationToken.findMany({ take: 10 })
      * 
-     * // Only select the `code`
-     * const verificationTokenWithCodeOnly = await prisma.verificationToken.findMany({ select: { code: true } })
+     * // Only select the `id`
+     * const verificationTokenWithIdOnly = await prisma.verificationToken.findMany({ select: { id: true } })
      * 
      */
     findMany<T extends VerificationTokenFindManyArgs>(args?: SelectSubset<T, VerificationTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -3737,9 +3863,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many VerificationTokens and only return the `code`
-     * const verificationTokenWithCodeOnly = await prisma.verificationToken.createManyAndReturn({
-     *   select: { code: true },
+     * // Create many VerificationTokens and only return the `id`
+     * const verificationTokenWithIdOnly = await prisma.verificationToken.createManyAndReturn({
+     *   select: { id: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -3828,9 +3954,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more VerificationTokens and only return the `code`
-     * const verificationTokenWithCodeOnly = await prisma.verificationToken.updateManyAndReturn({
-     *   select: { code: true },
+     * // Update zero or more VerificationTokens and only return the `id`
+     * const verificationTokenWithIdOnly = await prisma.verificationToken.updateManyAndReturn({
+     *   select: { id: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4033,10 +4159,14 @@ export namespace Prisma {
    * Fields of the VerificationToken model
    */
   interface VerificationTokenFieldRefs {
+    readonly id: FieldRef<"VerificationToken", 'String'>
     readonly code: FieldRef<"VerificationToken", 'String'>
     readonly userId: FieldRef<"VerificationToken", 'String'>
     readonly token: FieldRef<"VerificationToken", 'String'>
+    readonly type: FieldRef<"VerificationToken", 'VerificationType'>
     readonly expires: FieldRef<"VerificationToken", 'DateTime'>
+    readonly used: FieldRef<"VerificationToken", 'Boolean'>
+    readonly createdAt: FieldRef<"VerificationToken", 'DateTime'>
   }
     
 
@@ -5615,7 +5745,9 @@ export namespace Prisma {
     firstName: 'firstName',
     lastName: 'lastName',
     hashedPassword: 'hashedPassword',
-    email: 'email'
+    email: 'email',
+    emailVerified: 'emailVerified',
+    createdAt: 'createdAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -5625,17 +5757,24 @@ export namespace Prisma {
     id: 'id',
     sessionToken: 'sessionToken',
     userId: 'userId',
-    expires: 'expires'
+    expires: 'expires',
+    createdAt: 'createdAt',
+    lastUsed: 'lastUsed',
+    userAgent: 'userAgent'
   };
 
   export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
   export const VerificationTokenScalarFieldEnum: {
+    id: 'id',
     code: 'code',
     userId: 'userId',
     token: 'token',
-    expires: 'expires'
+    type: 'type',
+    expires: 'expires',
+    used: 'used',
+    createdAt: 'createdAt'
   };
 
   export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
@@ -5703,6 +5842,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -5713,6 +5859,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VerificationType'
+   */
+  export type EnumVerificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'VerificationType[]'
+   */
+  export type ListEnumVerificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationType[]'>
     
 
 
@@ -5741,13 +5901,6 @@ export namespace Prisma {
    * Reference to a field of type 'TaskPriority[]'
    */
   export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -5791,6 +5944,8 @@ export namespace Prisma {
     lastName?: StringFilter<"User"> | string
     hashedPassword?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
+    emailVerified?: BoolFilter<"User"> | boolean
+    createdAt?: DateTimeFilter<"User"> | Date | string
     sessions?: SessionListRelationFilter
     tasks?: TaskListRelationFilter
     verificationCodes?: VerificationTokenListRelationFilter
@@ -5802,6 +5957,8 @@ export namespace Prisma {
     lastName?: SortOrder
     hashedPassword?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
+    createdAt?: SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     tasks?: TaskOrderByRelationAggregateInput
     verificationCodes?: VerificationTokenOrderByRelationAggregateInput
@@ -5816,6 +5973,8 @@ export namespace Prisma {
     firstName?: StringFilter<"User"> | string
     lastName?: StringFilter<"User"> | string
     hashedPassword?: StringFilter<"User"> | string
+    emailVerified?: BoolFilter<"User"> | boolean
+    createdAt?: DateTimeFilter<"User"> | Date | string
     sessions?: SessionListRelationFilter
     tasks?: TaskListRelationFilter
     verificationCodes?: VerificationTokenListRelationFilter
@@ -5827,6 +5986,8 @@ export namespace Prisma {
     lastName?: SortOrder
     hashedPassword?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
+    createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -5841,6 +6002,8 @@ export namespace Prisma {
     lastName?: StringWithAggregatesFilter<"User"> | string
     hashedPassword?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
+    emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
   export type SessionWhereInput = {
@@ -5851,6 +6014,9 @@ export namespace Prisma {
     sessionToken?: StringFilter<"Session"> | string
     userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    lastUsed?: DateTimeFilter<"Session"> | Date | string
+    userAgent?: StringNullableFilter<"Session"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -5859,6 +6025,9 @@ export namespace Prisma {
     sessionToken?: SortOrder
     userId?: SortOrder
     expires?: SortOrder
+    createdAt?: SortOrder
+    lastUsed?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -5870,6 +6039,9 @@ export namespace Prisma {
     NOT?: SessionWhereInput | SessionWhereInput[]
     userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    lastUsed?: DateTimeFilter<"Session"> | Date | string
+    userAgent?: StringNullableFilter<"Session"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "sessionToken">
 
@@ -5878,6 +6050,9 @@ export namespace Prisma {
     sessionToken?: SortOrder
     userId?: SortOrder
     expires?: SortOrder
+    createdAt?: SortOrder
+    lastUsed?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
     _count?: SessionCountOrderByAggregateInput
     _max?: SessionMaxOrderByAggregateInput
     _min?: SessionMinOrderByAggregateInput
@@ -5891,28 +6066,40 @@ export namespace Prisma {
     sessionToken?: StringWithAggregatesFilter<"Session"> | string
     userId?: StringWithAggregatesFilter<"Session"> | string
     expires?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+    lastUsed?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+    userAgent?: StringNullableWithAggregatesFilter<"Session"> | string | null
   }
 
   export type VerificationTokenWhereInput = {
     AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
     OR?: VerificationTokenWhereInput[]
     NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    id?: StringFilter<"VerificationToken"> | string
     code?: StringFilter<"VerificationToken"> | string
     userId?: StringFilter<"VerificationToken"> | string
     token?: StringFilter<"VerificationToken"> | string
+    type?: EnumVerificationTypeFilter<"VerificationToken"> | $Enums.VerificationType
     expires?: DateTimeFilter<"VerificationToken"> | Date | string
+    used?: BoolFilter<"VerificationToken"> | boolean
+    createdAt?: DateTimeFilter<"VerificationToken"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type VerificationTokenOrderByWithRelationInput = {
+    id?: SortOrder
     code?: SortOrder
     userId?: SortOrder
     token?: SortOrder
+    type?: SortOrder
     expires?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
   }
 
   export type VerificationTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
     token?: string
     userId_token?: VerificationTokenUserIdTokenCompoundUniqueInput
     AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
@@ -5920,15 +6107,22 @@ export namespace Prisma {
     NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
     code?: StringFilter<"VerificationToken"> | string
     userId?: StringFilter<"VerificationToken"> | string
+    type?: EnumVerificationTypeFilter<"VerificationToken"> | $Enums.VerificationType
     expires?: DateTimeFilter<"VerificationToken"> | Date | string
+    used?: BoolFilter<"VerificationToken"> | boolean
+    createdAt?: DateTimeFilter<"VerificationToken"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "token" | "userId_token">
+  }, "id" | "token" | "userId_token">
 
   export type VerificationTokenOrderByWithAggregationInput = {
+    id?: SortOrder
     code?: SortOrder
     userId?: SortOrder
     token?: SortOrder
+    type?: SortOrder
     expires?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
     _count?: VerificationTokenCountOrderByAggregateInput
     _max?: VerificationTokenMaxOrderByAggregateInput
     _min?: VerificationTokenMinOrderByAggregateInput
@@ -5938,10 +6132,14 @@ export namespace Prisma {
     AND?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
     OR?: VerificationTokenScalarWhereWithAggregatesInput[]
     NOT?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VerificationToken"> | string
     code?: StringWithAggregatesFilter<"VerificationToken"> | string
     userId?: StringWithAggregatesFilter<"VerificationToken"> | string
     token?: StringWithAggregatesFilter<"VerificationToken"> | string
+    type?: EnumVerificationTypeWithAggregatesFilter<"VerificationToken"> | $Enums.VerificationType
     expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
+    used?: BoolWithAggregatesFilter<"VerificationToken"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
   }
 
   export type TaskWhereInput = {
@@ -6040,6 +6238,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     verificationCodes?: VerificationTokenCreateNestedManyWithoutUserInput
@@ -6051,6 +6251,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     verificationCodes?: VerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -6062,6 +6264,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     verificationCodes?: VerificationTokenUpdateManyWithoutUserNestedInput
@@ -6073,6 +6277,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     verificationCodes?: VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -6084,6 +6290,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -6092,6 +6300,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -6100,12 +6310,17 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionCreateInput = {
     id?: string
     sessionToken: string
     expires: Date | string
+    createdAt?: Date | string
+    lastUsed?: Date | string
+    userAgent?: string | null
     user: UserCreateNestedOneWithoutSessionsInput
   }
 
@@ -6114,12 +6329,18 @@ export namespace Prisma {
     sessionToken: string
     userId: string
     expires: Date | string
+    createdAt?: Date | string
+    lastUsed?: Date | string
+    userAgent?: string | null
   }
 
   export type SessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsed?: DateTimeFieldUpdateOperationsInput | Date | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutSessionsNestedInput
   }
 
@@ -6128,6 +6349,9 @@ export namespace Prisma {
     sessionToken?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsed?: DateTimeFieldUpdateOperationsInput | Date | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionCreateManyInput = {
@@ -6135,12 +6359,18 @@ export namespace Prisma {
     sessionToken: string
     userId: string
     expires: Date | string
+    createdAt?: Date | string
+    lastUsed?: Date | string
+    userAgent?: string | null
   }
 
   export type SessionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsed?: DateTimeFieldUpdateOperationsInput | Date | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionUncheckedUpdateManyInput = {
@@ -6148,54 +6378,85 @@ export namespace Prisma {
     sessionToken?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsed?: DateTimeFieldUpdateOperationsInput | Date | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VerificationTokenCreateInput = {
+    id?: string
     code: string
     token: string
+    type?: $Enums.VerificationType
     expires: Date | string
+    used?: boolean
+    createdAt?: Date | string
     user: UserCreateNestedOneWithoutVerificationCodesInput
   }
 
   export type VerificationTokenUncheckedCreateInput = {
+    id?: string
     code: string
     userId: string
     token: string
+    type?: $Enums.VerificationType
     expires: Date | string
+    used?: boolean
+    createdAt?: Date | string
   }
 
   export type VerificationTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    type?: EnumVerificationTypeFieldUpdateOperationsInput | $Enums.VerificationType
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutVerificationCodesNestedInput
   }
 
   export type VerificationTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    type?: EnumVerificationTypeFieldUpdateOperationsInput | $Enums.VerificationType
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VerificationTokenCreateManyInput = {
+    id?: string
     code: string
     userId: string
     token: string
+    type?: $Enums.VerificationType
     expires: Date | string
+    used?: boolean
+    createdAt?: Date | string
   }
 
   export type VerificationTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    type?: EnumVerificationTypeFieldUpdateOperationsInput | $Enums.VerificationType
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VerificationTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    type?: EnumVerificationTypeFieldUpdateOperationsInput | $Enums.VerificationType
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskCreateInput = {
@@ -6317,6 +6578,22 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type SessionListRelationFilter = {
     every?: SessionWhereInput
     some?: SessionWhereInput
@@ -6353,6 +6630,8 @@ export namespace Prisma {
     lastName?: SortOrder
     hashedPassword?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -6361,6 +6640,8 @@ export namespace Prisma {
     lastName?: SortOrder
     hashedPassword?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -6369,6 +6650,8 @@ export namespace Prisma {
     lastName?: SortOrder
     hashedPassword?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -6389,41 +6672,12 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type SessionCountOrderByAggregateInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type SessionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type SessionMinOrderByAggregateInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -6440,32 +6694,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type VerificationTokenUserIdTokenCompoundUniqueInput = {
-    userId: string
-    token: string
-  }
-
-  export type VerificationTokenCountOrderByAggregateInput = {
-    code?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type VerificationTokenMaxOrderByAggregateInput = {
-    code?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type VerificationTokenMinOrderByAggregateInput = {
-    code?: SortOrder
-    userId?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6479,6 +6707,119 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type SessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+    lastUsed?: SortOrder
+    userAgent?: SortOrder
+  }
+
+  export type SessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+    lastUsed?: SortOrder
+    userAgent?: SortOrder
+  }
+
+  export type SessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+    lastUsed?: SortOrder
+    userAgent?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type EnumVerificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationType | EnumVerificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerificationTypeFilter<$PrismaModel> | $Enums.VerificationType
+  }
+
+  export type VerificationTokenUserIdTokenCompoundUniqueInput = {
+    userId: string
+    token: string
+  }
+
+  export type VerificationTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    type?: SortOrder
+    expires?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type VerificationTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    type?: SortOrder
+    expires?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type VerificationTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    type?: SortOrder
+    expires?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumVerificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationType | EnumVerificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.VerificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVerificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumVerificationTypeFilter<$PrismaModel>
   }
 
   export type EnumTaskStatusFilter<$PrismaModel = never> = {
@@ -6513,11 +6854,6 @@ export namespace Prisma {
     in?: $Enums.Intervals[] | ListEnumIntervalsFieldRefInput<$PrismaModel> | null
     notIn?: $Enums.Intervals[] | ListEnumIntervalsFieldRefInput<$PrismaModel> | null
     not?: NestedEnumIntervalsNullableFilter<$PrismaModel> | $Enums.Intervals | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type TaskCountOrderByAggregateInput = {
@@ -6561,24 +6897,6 @@ export namespace Prisma {
     isRecurring?: SortOrder
     recurringInterval?: SortOrder
     userId?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type EnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -6663,6 +6981,14 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type SessionUpdateManyWithoutUserNestedInput = {
@@ -6755,8 +7081,8 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
@@ -6771,6 +7097,10 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutVerificationCodesInput, UserUncheckedCreateWithoutVerificationCodesInput>
     connectOrCreate?: UserCreateOrConnectWithoutVerificationCodesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type EnumVerificationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.VerificationType
   }
 
   export type UserUpdateOneRequiredWithoutVerificationCodesNestedInput = {
@@ -6789,10 +7119,6 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
     connectOrCreate?: UserCreateOrConnectWithoutTasksInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type EnumTaskStatusFieldUpdateOperationsInput = {
@@ -6838,6 +7164,22 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6866,15 +7208,12 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -6905,32 +7244,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedEnumTaskStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
-  }
-
-  export type NestedEnumTaskPriorityFilter<$PrismaModel = never> = {
-    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
-    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
-    not?: NestedEnumTaskPriorityFilter<$PrismaModel> | $Enums.TaskPriority
-  }
-
-  export type NestedBoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
-  export type NestedEnumIntervalsNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Intervals | EnumIntervalsFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Intervals[] | ListEnumIntervalsFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Intervals[] | ListEnumIntervalsFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumIntervalsNullableFilter<$PrismaModel> | $Enums.Intervals | null
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6957,6 +7270,49 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumVerificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationType | EnumVerificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerificationTypeFilter<$PrismaModel> | $Enums.VerificationType
+  }
+
+  export type NestedEnumVerificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VerificationType | EnumVerificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VerificationType[] | ListEnumVerificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVerificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.VerificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVerificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumVerificationTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
+  }
+
+  export type NestedEnumTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityFilter<$PrismaModel> | $Enums.TaskPriority
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type NestedEnumIntervalsNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.Intervals | EnumIntervalsFieldRefInput<$PrismaModel> | null
+    in?: $Enums.Intervals[] | ListEnumIntervalsFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.Intervals[] | ListEnumIntervalsFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumIntervalsNullableFilter<$PrismaModel> | $Enums.Intervals | null
   }
 
   export type NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -7001,12 +7357,18 @@ export namespace Prisma {
     id?: string
     sessionToken: string
     expires: Date | string
+    createdAt?: Date | string
+    lastUsed?: Date | string
+    userAgent?: string | null
   }
 
   export type SessionUncheckedCreateWithoutUserInput = {
     id?: string
     sessionToken: string
     expires: Date | string
+    createdAt?: Date | string
+    lastUsed?: Date | string
+    userAgent?: string | null
   }
 
   export type SessionCreateOrConnectWithoutUserInput = {
@@ -7058,15 +7420,23 @@ export namespace Prisma {
   }
 
   export type VerificationTokenCreateWithoutUserInput = {
+    id?: string
     code: string
     token: string
+    type?: $Enums.VerificationType
     expires: Date | string
+    used?: boolean
+    createdAt?: Date | string
   }
 
   export type VerificationTokenUncheckedCreateWithoutUserInput = {
+    id?: string
     code: string
     token: string
+    type?: $Enums.VerificationType
     expires: Date | string
+    used?: boolean
+    createdAt?: Date | string
   }
 
   export type VerificationTokenCreateOrConnectWithoutUserInput = {
@@ -7103,6 +7473,9 @@ export namespace Prisma {
     sessionToken?: StringFilter<"Session"> | string
     userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    lastUsed?: DateTimeFilter<"Session"> | Date | string
+    userAgent?: StringNullableFilter<"Session"> | string | null
   }
 
   export type TaskUpsertWithWhereUniqueWithoutUserInput = {
@@ -7159,10 +7532,14 @@ export namespace Prisma {
     AND?: VerificationTokenScalarWhereInput | VerificationTokenScalarWhereInput[]
     OR?: VerificationTokenScalarWhereInput[]
     NOT?: VerificationTokenScalarWhereInput | VerificationTokenScalarWhereInput[]
+    id?: StringFilter<"VerificationToken"> | string
     code?: StringFilter<"VerificationToken"> | string
     userId?: StringFilter<"VerificationToken"> | string
     token?: StringFilter<"VerificationToken"> | string
+    type?: EnumVerificationTypeFilter<"VerificationToken"> | $Enums.VerificationType
     expires?: DateTimeFilter<"VerificationToken"> | Date | string
+    used?: BoolFilter<"VerificationToken"> | boolean
+    createdAt?: DateTimeFilter<"VerificationToken"> | Date | string
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -7171,6 +7548,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     tasks?: TaskCreateNestedManyWithoutUserInput
     verificationCodes?: VerificationTokenCreateNestedManyWithoutUserInput
   }
@@ -7181,6 +7560,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     verificationCodes?: VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   }
@@ -7207,6 +7588,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUpdateManyWithoutUserNestedInput
     verificationCodes?: VerificationTokenUpdateManyWithoutUserNestedInput
   }
@@ -7217,6 +7600,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     verificationCodes?: VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -7227,6 +7612,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
   }
@@ -7237,6 +7624,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
   }
@@ -7263,6 +7652,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
   }
@@ -7273,6 +7664,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -7283,6 +7676,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     verificationCodes?: VerificationTokenCreateNestedManyWithoutUserInput
   }
@@ -7293,6 +7688,8 @@ export namespace Prisma {
     lastName: string
     hashedPassword: string
     email: string
+    emailVerified?: boolean
+    createdAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     verificationCodes?: VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   }
@@ -7319,6 +7716,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     verificationCodes?: VerificationTokenUpdateManyWithoutUserNestedInput
   }
@@ -7329,6 +7728,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     verificationCodes?: VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -7337,6 +7738,9 @@ export namespace Prisma {
     id?: string
     sessionToken: string
     expires: Date | string
+    createdAt?: Date | string
+    lastUsed?: Date | string
+    userAgent?: string | null
   }
 
   export type TaskCreateManyUserInput = {
@@ -7354,27 +7758,40 @@ export namespace Prisma {
   }
 
   export type VerificationTokenCreateManyUserInput = {
+    id?: string
     code: string
     token: string
+    type?: $Enums.VerificationType
     expires: Date | string
+    used?: boolean
+    createdAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsed?: DateTimeFieldUpdateOperationsInput | Date | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsed?: DateTimeFieldUpdateOperationsInput | Date | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsed?: DateTimeFieldUpdateOperationsInput | Date | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TaskUpdateWithoutUserInput = {
@@ -7420,21 +7837,33 @@ export namespace Prisma {
   }
 
   export type VerificationTokenUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    type?: EnumVerificationTypeFieldUpdateOperationsInput | $Enums.VerificationType
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VerificationTokenUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    type?: EnumVerificationTypeFieldUpdateOperationsInput | $Enums.VerificationType
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VerificationTokenUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    type?: EnumVerificationTypeFieldUpdateOperationsInput | $Enums.VerificationType
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
