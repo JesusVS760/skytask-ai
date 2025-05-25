@@ -9,13 +9,15 @@ type TaskListProps = {
 
 export const TaskList = ({ tasks, setToastSuccessMsg }: TaskListProps) => {
   return (
-    <Table className="min-w-[800px] max-w-[1000px]">
+    <Table className="min-w-[800px] ">
       <TableHeader>
         <TableRow>
           <TableHead>Status</TableHead>
           <TableHead>Description</TableHead>
           <TableHead>Priority</TableHead>
           <TableHead>Due Date</TableHead>
+          <TableHead>Edit</TableHead>
+          <TableHead>Delete</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

@@ -70,17 +70,36 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-700 via-gray-800 to-black
+"
+    >
       <Toaster />
-      <div className="flex flex-col items-center justify-center">
-        {isLoading && (
-          <p className="text-blue-500 animate-pulse mt-4 text-xl">Thinking... Please wait.</p>
-        )}
-        <TypingAnimation className="mb-4 text-sm max-w-md text-center" duration={50}>
-          {lastAgentMessage ?? ""}
-        </TypingAnimation>
+
+      <div className="bg-white py-10 px-18 rounded-lg">
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center gap-2 ">
+            <h1 className="font-semibold text-3xl ">SayTask AI</h1>
+            <p>Speak naturally and I'll help you with your tasks</p>
+          </div>
+          <div className="flex items-center justify-center animate-pulse  bg-green-300/20 text-green-800 font-semibold rounded-full outline-1 outline-green-300 w-max py-2 px-4 mt-4">
+            <p>Ready to listen</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col  items-center justify-center">
+          {isLoading && (
+            <p className="text-blue-500 animate-pulse mt-4 text-xl">Thinking... Please wait.</p>
+          )}
+          <TypingAnimation className="mb-4 text-sm max-w-md text-center" duration={50}>
+            {lastAgentMessage ?? ""}
+          </TypingAnimation>
+        </div>
+        <VoiceRecorder onTranscribe={handleTranscription} />
       </div>
-      <VoiceRecorder onTranscribe={handleTranscription} />
+      <div className="text-center text-sm text-white mt-4">
+        <p>Powered by advanced voice recognition technology</p>
+      </div>
     </div>
   );
 }
