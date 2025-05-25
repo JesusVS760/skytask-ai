@@ -15,6 +15,12 @@ export function Navigation() {
           <Link href="/tasks" className={cn("flex items-center px-3 font-medium")}>
             Tasks
           </Link>
+          <Link href="/auth/login" className={cn("flex items-center px-3 font-medium")}>
+            Login
+          </Link>
+          <Link href="/auth/register" className={cn("flex items-center px-3 font-medium")}>
+            Register
+          </Link>
         </div>
       </div>
     </nav>

@@ -5,13 +5,13 @@ import { clearSession, createSession, hashPassword, verifyPassword } from "./aut
 import { prisma } from "./prisma";
 
 export async function signUp(formData: FormData) {
-  const firstName = formData.get("firstname") as string;
-  const lastName = formData.get("lastname") as string;
+  const firstName = formData.get("firstName") as string;
+  const lastName = formData.get("lastName") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
   if (!firstName || !lastName || !email || !password) {
-    throw new Error("All field required");
+    throw new Error("All fields required");
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });
@@ -25,7 +25,7 @@ export async function signUp(formData: FormData) {
   });
 
   await createSession(user.id);
-  redirect("/home");
+  redirect("/");
 }
 
 export async function signIn(formData: FormData) {
@@ -44,10 +44,10 @@ export async function signIn(formData: FormData) {
   }
 
   await createSession(user.id);
-  redirect("/home");
+  redirect("/");
 }
 
 export async function signOut() {
   await clearSession();
-  redirect("/");
+  redirect("/login");
 }
