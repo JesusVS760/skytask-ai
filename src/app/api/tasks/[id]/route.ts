@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth";
 import { taskService } from "@/services/task-service";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { params } = context;
   const { id } = await params;
   try {
@@ -17,7 +17,7 @@ export async function PATCH(req: NextRequest, context: { params: { id: string } 
   }
 }
 
-export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { params } = context;
   const { id } = await params;
   try {
@@ -34,7 +34,7 @@ export async function DELETE(req: NextRequest, context: { params: { id: string }
   }
 }
 
-export async function GET(request: NextRequest, context: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { params } = context;
   const { id } = await params;
   try {
