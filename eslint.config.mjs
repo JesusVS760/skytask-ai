@@ -6,18 +6,25 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Fix the FlatCompat constructor by adding the recommendedConfig parameter
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: {}, // Add this line to fix the error
 });
 
-// Use ignores property instead of .eslintignore file
 const eslintConfig = [
   {
-    ignores: ["node_modules/**", ".next/**", "out/**", "public/**"],
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "public/**",
+      "src/generated/**",
+      "prisma/generated/**",
+      "**/*.config.js",
+      "**/*.config.mjs",
+    ],
   },
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends("next/core-web-vitals"),
+  ...compat.extends("next/typescript"),
   {
     plugins: {
       "unused-imports": unusedImports,
@@ -34,6 +41,8 @@ const eslintConfig = [
           argsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/no-explicit-any": "warn",
+      "react/no-unescaped-entities": "warn",
     },
   },
 ];

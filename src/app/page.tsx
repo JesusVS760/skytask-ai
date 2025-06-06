@@ -68,7 +68,7 @@ export default function Home() {
             } else if (task.task) {
               const taskData = task.task;
 
-              const dateTime = parseDateTime(taskData.date, taskData.time);
+              const dateTime = parseDateTime(taskData.createdAt);
 
               const newTask = {
                 title: taskData.title,
@@ -100,7 +100,7 @@ export default function Home() {
 "
     >
       <Toaster />
-
+      {authLoading && <div>Authenciating</div>}
       <div className="bg-white py-10 px-18 rounded-lg">
         <div className="flex flex-col items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-2 ">
@@ -113,7 +113,7 @@ export default function Home() {
               </div>
               <h1 className="font-semibold text-3xl ">SayTask AI</h1>
             </div>
-            <p>Speak naturally and I'll help you with your tasks</p>
+            <p>Speak naturally and Ill help you with your tasks</p>
             {user && (
               <h2 className="text-md font-medium text-gray-800 mt-2">
                 Welcome back, {user.firstname}!

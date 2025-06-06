@@ -10,7 +10,7 @@ interface VoiceRecorderProps {
 }
 
 export default function VoiceRecorder({ onTranscribe }: VoiceRecorderProps) {
-  const { speechToText, isLoading } = useSpeechMutations();
+  const { speechToText } = useSpeechMutations();
   const [isRecording, setIsRecording] = useState(false);
   const [audioLevels, setAudioLevels] = useState<number[]>([0.1, 0.1, 0.1, 0.1, 0.1]);
 

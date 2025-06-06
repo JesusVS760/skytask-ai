@@ -42,10 +42,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Error to create task" }, { status: 500 });
   }
 }
-export async function DELETE(req: NextRequest) {
-  try {
-    const tasks = await req.json;
-  } catch (error) {
-    return NextResponse.json({ error: "Error deleting all tasks" }, { status: 500 });
-  }
-}
+// export async function DELETE(req: NextRequest) {
+//   try {
+//     const tasks = await req.json;
+//   } catch (error) {
+//     return NextResponse.json({ error: "Error deleting all tasks" }, { status: 500 });
+//   }
+// }

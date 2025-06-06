@@ -39,7 +39,7 @@ export async function getSession() {
       select: { id: true, firstName: true, lastName: true, email: true },
     });
     return user;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function parseDateTime(dateStr: string, timeStr: string): Date {
-  const combinedStr = `${dateStr}T${timeStr}`;
+export function parseDateTime(dateStr: Date): Date {
+  const combinedStr = `${dateStr}`;
   return new Date(combinedStr);
 }

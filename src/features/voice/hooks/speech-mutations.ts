@@ -18,7 +18,7 @@ export const useSpeechMutations = () => {
       return data.text;
     },
 
-    onError: (error: any) => {
+    onError: (error: Error) => {
       console.error("Error sending audio", error);
     },
   });

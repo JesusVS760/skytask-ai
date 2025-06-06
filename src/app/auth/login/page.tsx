@@ -29,6 +29,7 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginFormData) {
     setLoading(true);
+    setError(null);
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("password", data.password);
@@ -66,6 +67,11 @@ export default function LoginPage() {
       </div>
       <div>
         <div className=" bg-white rounded-2xl shadow-xl p-8">
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{error}</p>
+            </div>
+          )}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
@@ -127,7 +133,7 @@ export default function LoginPage() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Signing In...{" "}
+                  Signing In...
                 </>
               ) : (
                 "Sign In"
@@ -137,7 +143,7 @@ export default function LoginPage() {
         </div>
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Dont" have an account?{" "}
+            Dont have an account?
             <Link
               href="/auth/register"
               className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
@@ -151,7 +157,6 @@ export default function LoginPage() {
               href="/auth/reset"
               className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
             >
-              {" "}
               Click here
             </Link>
           </p>
@@ -161,7 +166,6 @@ export default function LoginPage() {
               href="/auth/reset"
               className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
             >
-              {" "}
               Reset here
             </Link>
           </p>

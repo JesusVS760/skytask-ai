@@ -1,8 +1,9 @@
+import { Task } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { ContextMessage } from "../schemas/context";
 
 type LLMResponse = {
-  task?: any;
+  task?: Task;
   followUpQuestion?: string;
 };
 
@@ -27,7 +28,7 @@ export const useLLMMutations = () => {
       return response;
     },
 
-    onError: (error: any) => {
+    onError: (error: Error) => {
       console.error("LLM ERROR: ", error);
     },
   });
