@@ -90,7 +90,9 @@ export default function TaskPage() {
   return (
     <div className="min-h-screen  px-4 py-8">
       <Toaster />
-
+      {/* <p className="text-gray-600 mt-1">
+        Welcome back, {user.firstName}! You have {tasks.length} tasks.
+      </p> */}
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2 text-shadow-lg/30">Your Tasks</h1>

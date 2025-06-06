@@ -6,8 +6,9 @@ import { useChat } from "@/features/tasks/hooks/use-chat";
 import VoiceRecorder from "@/features/voice/components/voice-recorder";
 import { useLLMMutations } from "@/features/voice/hooks/llm-mutation";
 import { parseDateTime } from "@/lib/utils";
+import axios from "axios";
 import { Mic } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 // Create a feature/component to confirm deletion of tasks (DONE!)
@@ -20,12 +21,38 @@ import { toast } from "sonner";
 export default function Home() {
   const { messages, append, reset, lastAgentMessage } = useChat();
   const [isLoading, setIsLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
 
   const { generateTask } = useLLMMutations();
   const { createTask } = useTaskMutations();
 
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    try {
+      const response = await axios("/api/auth/");
+      if (response) {
+        setUser(response.data.user);
+        console.log(response.data.user);
+      }
+    } catch (error) {
+      console.error("Auth check failed", error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   const handleTranscription = async (text: string | undefined) => {
     append({ message: text ?? "", role: "user" });
+
+    if (!user) {
+      toast.error("You must be logged in to create tasks");
+      return;
+    }
+
     setIsLoading(true);
 
     await generateTask.mutateAsync(
@@ -49,9 +76,6 @@ export default function Home() {
                 priority: taskData.priority,
                 dueDate: dateTime,
                 tags: taskData.tags || [],
-                user: {
-                  connect: { id: "123" },
-                },
               };
 
               createTask.mutate(newTask, {
@@ -90,8 +114,12 @@ export default function Home() {
               <h1 className="font-semibold text-3xl ">SayTask AI</h1>
             </div>
             <p>Speak naturally and I'll help you with your tasks</p>
+            {user && (
+              <h2 className="text-md font-medium text-gray-800 mt-2">
+                Welcome back, {user.firstname}!
+              </h2>
+            )}
           </div>
-
           {lastAgentMessage ? (
             ""
           ) : (

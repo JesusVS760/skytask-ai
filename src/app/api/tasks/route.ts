@@ -1,9 +1,15 @@
+import { getSession } from "@/lib/auth";
 import { taskService } from "@/services/task-service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const tasks = await taskService.getTasks();
+    const user = await getSession();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const tasks = await taskService.getTasks(user.id);
 
     return NextResponse.json({ tasks });
   } catch (error) {
@@ -14,9 +20,20 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const user = await getSession();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const taskData = await req.json();
     const task = await taskService.createTask({
       ...taskData,
+      user: {
+        connect: {
+          id: user?.id,
+        },
+      },
     });
 
     return NextResponse.json({ task }, { status: 201 });

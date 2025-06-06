@@ -7,9 +7,9 @@ import Link from "next/link";
 export function Navigation() {
   return (
     <nav className="border-b bg-white">
-      <div>
-        <div className="flex items-center  h-14 max-w-screen-xl mx-auto px-4">
-          <div className="flex items-center gap-2">
+      <div className=" max-w-screen-xl mx-auto px-4">
+        <div className="flex items-center  h-14">
+          <div className="flex items-center gap-2 mr-2">
             <div
               className="w-8 h-8 bg-gradient-to-br from-blue-700 to-teal-600
  rounded-lg flex items-center justify-center"

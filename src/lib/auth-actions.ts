@@ -51,3 +51,11 @@ export async function signOut() {
   await clearSession();
   redirect("/login");
 }
+
+export async function sendVerifyCode(formData: FormData) {
+  const email = formData.get("email") as string;
+
+  if (!email) {
+    throw new Error("Email Required");
+  }
+}

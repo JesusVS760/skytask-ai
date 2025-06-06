@@ -15,7 +15,7 @@ export async function verifyPassword(password: string, hashPassword: string) {
 
 export async function createSession(userId: string) {
   const token = await new SignJWT({ userId })
-    .setProtectedHeader({ alg: `HS256` })
+    .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("30d")
     .sign(secret);
 
@@ -27,7 +27,7 @@ export async function createSession(userId: string) {
   });
 }
 
-export async function getSesssion() {
+export async function getSession() {
   const token = (await cookies()).get("session")?.value;
 
   if (!token) return null;

@@ -1,3 +1,4 @@
+import { getSession } from "@/lib/auth";
 import { taskService } from "@/services/task-service";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -29,5 +30,21 @@ export async function DELETE(req: Request, context: { params: { id: string } }) 
   } catch (error) {
     console.log("Error deleteing Task:", error);
     return NextResponse.json({ error: "Error deleting task" }, { status: 500 });
+  }
+}
+
+export async function GET(request: NextRequest, { params }: { params: { taskId: string } }) {
+  try {
+    const user = await getSession();
+    if (!user) {
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+    }
+
+    const { taskId } = params;
+    const task = await taskService.getTaskById(taskId, user.id);
+
+    return NextResponse.json({ task });
+  } catch (error) {
+    console.error("Error fetching task:", error);
   }
 }

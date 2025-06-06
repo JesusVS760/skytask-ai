@@ -6,7 +6,7 @@ export const useTaskMutations = () => {
   const queryClient = useQueryClient();
 
   const createTask = useMutation({
-    mutationFn: async (taskData: Prisma.TaskCreateInput) => {
+    mutationFn: async (taskData: Omit<Prisma.TaskCreateInput, "user">) => {
       const { data } = await axios.post("/api/tasks", taskData);
       return data;
     },
