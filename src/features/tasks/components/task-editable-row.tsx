@@ -53,7 +53,7 @@ export default function EditableTaskRow({ task, onSave, onCancel }: EditableTask
           <option value="high">High</option>
         </select>
       </TableCell>
-      <TableCell>
+      {/* <TableCell>
         <input
           type="datetime-local"
           name="dueDate"
@@ -61,7 +61,7 @@ export default function EditableTaskRow({ task, onSave, onCancel }: EditableTask
           onChange={handleChange}
           className="border rounded p-1 text-sm"
         />
-      </TableCell>
+      </TableCell> */}
       <TableCell colSpan={2}>
         <div className="flex gap-2">
           <button
