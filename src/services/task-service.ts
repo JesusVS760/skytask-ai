@@ -1,7 +1,6 @@
-import { PrismaClient, Task } from "@/generated/prisma";
+import { Task } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-
-const prisma = new PrismaClient();
 
 export const taskService = {
   createTask: async (data: Prisma.TaskCreateInput) => {
