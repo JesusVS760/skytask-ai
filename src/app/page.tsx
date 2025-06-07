@@ -76,6 +76,7 @@ export default function Home() {
                 priority: taskData.priority,
                 dueDate: dateTime,
                 tags: taskData.tags || [],
+                user: user.id,
               };
 
               createTask.mutate(newTask, {

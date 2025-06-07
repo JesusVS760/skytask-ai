@@ -1,6 +1,5 @@
-import { Task } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+import type { Prisma, Task } from "@prisma/client";
 
 export const taskService = {
   createTask: async (data: Prisma.TaskCreateInput) => {

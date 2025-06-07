@@ -14,6 +14,8 @@ model User {
   lastName          String
   hashedPassword    String
   email             String              @unique
+  emailVerified     Boolean             @default(false)
+  createdAt         DateTime            @default(now())
   sessions          Session[]
   tasks             Task[]
   verificationCodes VerificationToken[]
@@ -24,17 +26,30 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  lastUsed     DateTime @default(now())
+  userAgent    String?
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-  code    String
-  userId  String
-  token   String   @unique
-  expires DateTime
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String           @id @default(cuid())
+  code      String
+  userId    String
+  token     String           @unique
+  type      VerificationType @default(EMAIL_VERIFICATION)
+  expires   DateTime
+  used      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, token])
+}
+
+enum VerificationType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  TWO_FACTOR
 }
 
 enum TaskPriority {
