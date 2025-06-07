@@ -1,4 +1,4 @@
-import { Task } from "@prisma/client";
+import { Task } from "@/generated/prisma";
 import { useMutation } from "@tanstack/react-query";
 import { ContextMessage } from "../schemas/context";
 
