@@ -4,7 +4,10 @@ export function middleware(request: NextRequest) {
   const sessionToken = request.cookies.get("session")?.value;
 
   const isAuthPage =
-    request.nextUrl.pathname === "/auth/login" || request.nextUrl.pathname === "/auth/register";
+    request.nextUrl.pathname === "/auth/login" ||
+    request.nextUrl.pathname === "/auth/register" ||
+    request.nextUrl.pathname === "/auth/forgot" ||
+    request.nextUrl.pathname === "/auth/verify";
   const isPublicPage = isAuthPage;
 
   if (!sessionToken && !isPublicPage) {

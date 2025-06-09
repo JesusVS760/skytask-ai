@@ -154,7 +154,7 @@ export default function LoginPage() {
           <p className="text-sm text-gray-600">
             Forgot password?
             <Link
-              href="/auth/reset"
+              href="/auth/forgot"
               className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
             >
               Click here

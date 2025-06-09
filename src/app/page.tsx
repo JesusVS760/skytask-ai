@@ -101,7 +101,6 @@ export default function Home() {
 "
     >
       <Toaster />
-      {authLoading && <div>Authenciating</div>}
       <div className="bg-white py-10 px-18 rounded-lg">
         <div className="flex flex-col items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-2 ">
@@ -119,6 +118,9 @@ export default function Home() {
               <h2 className="text-md font-medium text-gray-800 mt-2">
                 Welcome back, {user.firstname}!
               </h2>
+            )}
+            {authLoading && (
+              <h2 className="text-md font-medium text-gray-800 mt-2">Welcome back</h2>
             )}
           </div>
           {lastAgentMessage ? (
