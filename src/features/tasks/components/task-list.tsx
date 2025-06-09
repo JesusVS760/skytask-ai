@@ -16,6 +16,7 @@ export const TaskList = ({ tasks, setToastSuccessMsg }: TaskListProps) => {
           <TableHead>Description</TableHead>
           <TableHead>Priority</TableHead>
           <TableHead>Due Date</TableHead>
+          <TableHead>Tags</TableHead>
           <TableHead>Edit</TableHead>
           <TableHead>Delete</TableHead>
         </TableRow>

@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { useTaskMutations } from "../hooks/tasks-mutations";
 import { useConfirm } from "../hooks/use-confirm";
 
+import TagDropdown from "@/components/list-collapse";
 import EditableTaskRow from "./task-editable-row";
 
 type TaskCardProps = {
@@ -157,6 +158,10 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
       </TableCell>
 
       <TableCell>{readable}</TableCell>
+
+      <TableCell>
+        <TagDropdown tags={task.tags} />
+      </TableCell>
 
       <TableCell>
         <motion.div

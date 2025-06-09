@@ -69,15 +69,6 @@ export default function TaskPage() {
     return (
       <div className="min-h-screen flex items-center justify-center  px-4">
         <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center max-w-md shadow-sm">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
           <h3 className="text-gray-900 text-xl font-semibold mb-2">No Tasks Yet</h3>
           <p className="text-gray-600">
             Create your first task to get started organizing your life.
