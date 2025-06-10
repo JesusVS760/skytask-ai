@@ -5,7 +5,7 @@ export async function GET() {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "jesusvazquez@domain.com",
+      from: "jesusvazquezama760@livefree.website",
       to: ["jesusvazquezama760@gmail.com"],
       subject: "Hello world",
       html: `<h1> Hello World</h1>`,

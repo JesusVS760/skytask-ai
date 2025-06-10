@@ -95,6 +95,7 @@ export default function VerifyCode() {
               Verification Code
             </label>
             <input
+              {...register("code")}
               type="text"
               id="code"
               maxLength={6}
