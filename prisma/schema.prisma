@@ -35,7 +35,7 @@ model Session {
 }
 
 model VerificationToken {
-  id         String   @id @default(cuid())
+  id        String   @id @default(cuid()) 
   code       String
   userId     String
   token      String   @unique

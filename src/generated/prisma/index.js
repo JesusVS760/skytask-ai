@@ -223,11 +223,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://saytask-ai_owner:npg_BN7jETlazt0u@ep-restless-heart-a4jtt47t-pooler.us-east-1.aws.neon.tech/saytask-ai?sslmode=require"
+        "value": null
       }
     }
   },
