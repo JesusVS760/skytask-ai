@@ -40,8 +40,8 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div>
-      <div className=" flex flex-col  rounded-2xl">
+    <div className="flex flex-col items-center justify-center h-screen">
+      <div className="flex items-center flex-col justify-center">
         <div className="mx-auto h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center mb-4">
           <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path

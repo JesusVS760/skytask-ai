@@ -88,6 +88,14 @@ export async function sendVerifyCode(formData: FormData) {
     const token = generateVerificationToken();
     const expires = new Date(Date.now() + 60 * 60 * 1000);
 
+    console.log("Creating verification token with data:", {
+      code,
+      token,
+      expires,
+      userId: user.id,
+      user: user,
+    });
+
     await prisma.verificationToken.deleteMany({
       where: {
         userId: user.id,
