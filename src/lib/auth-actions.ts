@@ -1,10 +1,10 @@
 "use server";
 
-import axios from "axios";
 import crypto from "crypto";
 import { redirect } from "next/navigation";
 import { clearSession, createSession, hashPassword, verifyPassword } from "./auth";
 import { prisma } from "./prisma";
+import { sendVerificationEmail } from "./resend";
 
 export async function signUp(formData: FormData) {
   const firstName = formData.get("firstName") as string;
@@ -91,16 +91,32 @@ export async function sendVerifyCode(formData: FormData) {
     },
   });
 
-  try {
-    const { data } = await axios.get(
-      `${process.env.NEXTJS_URL || "http://localhost:3000"}/api/send`
-    );
-    console.log("email info", data);
-  } catch (error) {
-    console.error("ERROR fetching: ", error);
-  }
+  sendVerificationEmail(email, code);
 
-  return redirect(`/verify-code?email=${encodeURIComponent(email)}`);
+  return redirect(`/auth/verify?email=${encodeURIComponent(email)}`);
 }
 
-export async function VerifyResetCode(data: FormData) {}
+export async function VerifyResetCode(formData: FormData) {
+  const code = formData.get("code") as string;
+  const email = formData.get("email") as string;
+
+  if (!code) {
+    throw new Error("Missing required fields");
+  }
+
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user) throw new Error("User not found");
+
+  const verify = await prisma.verificationToken.findFirst({
+    where: {
+      code,
+      userId: user.id,
+    },
+  });
+
+  if (!verify) {
+    throw new Error("Verifcation Token Failed");
+  }
+  return { success: true };
+}

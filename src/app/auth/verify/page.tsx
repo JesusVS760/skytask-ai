@@ -55,7 +55,7 @@ export default function VerifyCode() {
   }
 
   return (
-    <div>
+    <div className="flex items-center justify-center h-screen">
       <div className="max-w-md w-full">
         <div className="flex flex-col rounded-2xl">
           <div className="mx-auto h-12 w-12 bg-green-600 rounded-xl flex items-center justify-center mb-4">
@@ -91,7 +91,7 @@ export default function VerifyCode() {
         )}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="code" className="block text-sm font-medium text-white mb-1">
               Verification Code
             </label>
             <input
