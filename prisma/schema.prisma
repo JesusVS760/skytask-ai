@@ -19,8 +19,6 @@ model User {
   sessions      Session[]
   tasks         Task[]
   verificationCodes VerificationToken[]
-
-
 }
 
 model Session {

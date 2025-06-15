@@ -2,13 +2,15 @@
 
 import { VerifyResetCode } from "@/lib/auth-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const verifySchema = z.object({
-  code: z.string().regex(/^\d{6}$/, "Code must be exactly 6 digits"),
+  code: z
+    .string()
+    .min(1, "Code is required")
+    .regex(/^\d{6}$/, "Code must be exactly 6 digits"),
 });
 
 type VerifyFromData = z.infer<typeof verifySchema>;
@@ -18,26 +20,26 @@ export default function VerifyCode() {
   const [loading, isLoading] = useState(false);
   const [email, setEmail] = useState<string>("");
 
-  const searchParams = useSearchParams();
-
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     watch,
   } = useForm<VerifyFromData>({
     resolver: zodResolver(verifySchema),
     mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   const codeValue = watch("code");
 
   useEffect(() => {
-    const emailParams = searchParams.get("email");
-    if (emailParams) {
-      setEmail(decodeURIComponent(emailParams));
+    const storedEmail = sessionStorage.getItem("verifyEmail");
+    if (storedEmail) {
+      setEmail(storedEmail);
     }
-  }, [searchParams]);
+    // sessionStorage.removeItem("verifyEmail");
+  }, []);
 
   async function onSubmit(data: VerifyFromData) {
     isLoading(true);
@@ -100,7 +102,7 @@ export default function VerifyCode() {
               id="code"
               maxLength={6}
               placeholder="000000"
-              className="w-full px-3 py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-center text-2xl font-mono tracking-widest"
+              className="w-full px-3 text-white py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-center text-2xl font-mono tracking-widest"
               onChange={(e) => {
                 e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6);
               }}
@@ -109,7 +111,7 @@ export default function VerifyCode() {
           </div>
           <button
             type="submit"
-            disabled={loading || !isValid || !codeValue || codeValue.length !== 6}
+            disabled={loading || !codeValue || codeValue.length !== 6}
             className="w-full flex justify-center py-3 cursor-pointer px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? (

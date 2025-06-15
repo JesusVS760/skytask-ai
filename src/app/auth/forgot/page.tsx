@@ -2,8 +2,10 @@
 
 import { sendVerifyCode } from "@/lib/auth-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
 import { z } from "zod";
 
 const forgotSchema = z.object({
@@ -29,18 +31,28 @@ export default function ForgotPassword() {
     isLoading(true);
     const formData = new FormData();
     formData.append("email", data.email);
+    let shouldRedirect = false;
 
     try {
-      await sendVerifyCode(formData);
+      const { success } = await sendVerifyCode(formData);
+      if (success) {
+        toast("Succesfully sent code ✔️!");
+        sessionStorage.setItem("verifyEmail", data.email);
+        shouldRedirect = true;
+      }
     } catch (error) {
       setError(error instanceof Error ? error.message : "Failed to create account");
     } finally {
       isLoading(false);
     }
+    if (shouldRedirect) {
+      redirect("/auth/verify");
+    }
   }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
+      <Toaster />
       <div className="flex items-center flex-col justify-center">
         <div className="mx-auto h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center mb-4">
           <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

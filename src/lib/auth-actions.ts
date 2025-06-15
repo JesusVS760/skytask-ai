@@ -93,30 +93,53 @@ export async function sendVerifyCode(formData: FormData) {
 
   sendVerificationEmail(email, code);
 
-  return redirect(`/auth/verify?email=${encodeURIComponent(email)}`);
+  return { success: true };
 }
 
 export async function VerifyResetCode(formData: FormData) {
   const code = formData.get("code") as string;
   const email = formData.get("email") as string;
 
-  if (!code) {
+  if (!code || !email) {
     throw new Error("Missing required fields");
   }
 
   const user = await prisma.user.findUnique({ where: { email } });
+  console.log("User Found:", user);
 
   if (!user) throw new Error("User not found");
 
   const verify = await prisma.verificationToken.findFirst({
     where: {
-      code,
+      code: code.trim(),
       userId: user.id,
+      type: "EMAIL_VERIFICATION",
+      used: false,
+      expires: {
+        gt: new Date(),
+      },
     },
   });
+
+  console.log("Query conditions:", {
+    code: code.trim(),
+    userId: user.id,
+    type: "EMAIL_VERIFICATION",
+    used: false,
+    currentTime: new Date(),
+  });
+  console.log("Matching token found:", verify);
 
   if (!verify) {
     throw new Error("Verifcation Token Failed");
   }
-  return { success: true };
+
+  await prisma.verificationToken.update({
+    where: { id: verify.id },
+    data: { used: true },
+  });
+
+  await createSession(user.id);
+
+  redirect("/");
 }
