@@ -23,7 +23,7 @@ export default function VerifyCode() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
   } = useForm<VerifyFromData>({
     resolver: zodResolver(verifySchema),
@@ -38,11 +38,18 @@ export default function VerifyCode() {
     if (storedEmail) {
       setEmail(storedEmail);
     }
-    // sessionStorage.removeItem("verifyEmail");
   }, []);
+
+  useEffect(() => {
+    if (error && codeValue) {
+      setError(null);
+    }
+  }, [codeValue, error]);
 
   async function onSubmit(data: VerifyFromData) {
     isLoading(true);
+    setError(null);
+
     const formData = new FormData();
     formData.append("code", data.code);
     formData.append("email", email);
@@ -55,6 +62,8 @@ export default function VerifyCode() {
       isLoading(false);
     }
   }
+
+  const isButtonDisabled = loading || !codeValue || codeValue.length !== 6 || !isValid;
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -86,11 +95,13 @@ export default function VerifyCode() {
             </div>
           </div>
         </div>
+
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-600 text-sm">{error}</p>
           </div>
         )}
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
             <label htmlFor="code" className="block text-sm font-medium text-white mb-1">
@@ -103,15 +114,13 @@ export default function VerifyCode() {
               maxLength={6}
               placeholder="000000"
               className="w-full px-3 text-white py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-center text-2xl font-mono tracking-widest"
-              onChange={(e) => {
-                e.target.value = e.target.value.replace(/\D/g, "").slice(0, 6);
-              }}
             />
             {errors.code && <div className="mt-1 text-sm text-red-600">{errors.code.message}</div>}
           </div>
+
           <button
             type="submit"
-            disabled={loading || !codeValue || codeValue.length !== 6}
+            disabled={isButtonDisabled}
             className="w-full flex justify-center py-3 cursor-pointer px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? (

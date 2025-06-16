@@ -141,5 +141,37 @@ export async function VerifyResetCode(formData: FormData) {
 
   await createSession(user.id);
 
+  redirect("/auth/reset");
+}
+
+export async function changePassword(formData: FormData) {
+  const oldPassword = formData.get("oldPassword") as string;
+  const newPassword = formData.get("newPassword") as string;
+
+  if (!oldPassword || !newPassword) {
+    throw new Error("Missing required fields");
+  }
+
+  const email = localStorage.getItem("verifyEmail");
+
+  if (!email) {
+    throw new Error("Failed to get email");
+  }
+
+  const user = prisma.user.findUnique({ where: { email } });
+
+  if (!user) throw new Error("User not found");
+
+  const hashed = await hashPassword(newPassword);
+
+  await prisma.user.update({
+    where: {
+      email: email,
+    },
+    data: {
+      hashedPassword: hashed,
+    },
+  });
+
   redirect("/");
 }

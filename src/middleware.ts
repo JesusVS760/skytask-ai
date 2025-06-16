@@ -8,6 +8,7 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/auth/register" ||
     request.nextUrl.pathname === "/auth/forgot" ||
     request.nextUrl.pathname === "/auth/verify";
+  request.nextUrl.pathname === "/auth/reset";
   const isPublicPage = isAuthPage;
 
   if (!sessionToken && !isPublicPage) {
