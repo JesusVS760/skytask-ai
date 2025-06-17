@@ -2,7 +2,7 @@
 
 import { changePassword } from "@/lib/auth-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -16,25 +16,38 @@ type resetPasswordType = z.infer<typeof resetSchema>;
 export default function ResetPassword() {
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [getEmail, setGetEmail] = useState<string>("");
 
-  const email = sessionStorage.getItem("verifyEmail");
-  console.log(email);
+  useEffect(() => {
+    const email = sessionStorage.getItem("verifyEmail");
+    if (email) {
+      setGetEmail(email);
+    }
+  }, [getEmail]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    watch,
   } = useForm({
     resolver: zodResolver(resetSchema),
     reValidateMode: "onChange",
+    mode: "onChange",
   });
+
+  const oldPasswordWatch = watch("oldPassword");
+  const newPasswordWatch = watch("newPassword");
+
+  useEffect(() => {
+    if ((error && oldPasswordWatch) || newPasswordWatch) {
+      setError(null);
+    }
+  }, [oldPasswordWatch, newPasswordWatch]);
 
   async function onSubmit(data: resetPasswordType) {
     setLoading(true);
     setError(null);
-
     const formData = new FormData();
     formData.append("oldPassword", data.oldPassword);
     formData.append("oldPassword", data.newPassword);
@@ -46,13 +59,13 @@ export default function ResetPassword() {
     }
   }
 
-  const disabledButton = !isValid || loading || !password || !confirmPassword;
+  const disabledButton = !isValid || loading;
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold text-white">Reset account password</h1>
         <p className="text-white/80">
-          Enter a new password for <span className="text-blue-600">{email}</span>
+          Enter a new password for <span className="text-blue-600">{getEmail}</span>
         </p>
       </div>
 
