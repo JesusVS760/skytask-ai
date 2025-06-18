@@ -9,6 +9,7 @@ import { z } from "zod";
 const resetSchema = z.object({
   oldPassword: z.string().min(8).max(12),
   newPassword: z.string().min(8).max(12),
+  email: z.string().email(),
 });
 
 type resetPasswordType = z.infer<typeof resetSchema>;
@@ -18,23 +19,28 @@ export default function ResetPassword() {
   const [loading, setLoading] = useState(false);
   const [getEmail, setGetEmail] = useState<string>("");
 
-  useEffect(() => {
-    const email = sessionStorage.getItem("verifyEmail");
-    if (email) {
-      setGetEmail(email);
-    }
-  }, [getEmail]);
-
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     watch,
+    setValue,
   } = useForm({
     resolver: zodResolver(resetSchema),
     reValidateMode: "onChange",
     mode: "onChange",
+    defaultValues: {
+      email: "",
+    },
   });
+
+  useEffect(() => {
+    const email = sessionStorage.getItem("verifyEmail");
+    if (email) {
+      setGetEmail(email);
+      setValue("email", email);
+    }
+  }, [setValue]);
 
   const oldPasswordWatch = watch("oldPassword");
   const newPasswordWatch = watch("newPassword");
@@ -46,11 +52,17 @@ export default function ResetPassword() {
   }, [oldPasswordWatch, newPasswordWatch]);
 
   async function onSubmit(data: resetPasswordType) {
+    if (data.oldPassword !== data.newPassword) {
+      setError("Passwords must match.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     const formData = new FormData();
     formData.append("oldPassword", data.oldPassword);
-    formData.append("oldPassword", data.newPassword);
+    formData.append("newPassword", data.newPassword);
+    formData.append("email", data.email);
 
     try {
       await changePassword(formData);
@@ -69,19 +81,13 @@ export default function ResetPassword() {
         </p>
       </div>
 
-      {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600 text-sm">{error}</p>
-        </div>
-      )}
-
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white px-18 py-12 m-8 rounded-xl">
         <div>
           <div className="my-2">
             <input
               {...register("oldPassword")}
               type="password"
-              id="oldPasword"
+              id="oldPassword"
               maxLength={12}
               placeholder="Password"
               className="outline text-md text-black"
@@ -104,9 +110,14 @@ export default function ResetPassword() {
             <div className="mt-1 text-sm text-red-600">{errors.newPassword.message}</div>
           )}
         </div>
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        )}
         <div>
           <button
-            type="button"
+            type="submit"
             disabled={disabledButton}
             className="w-full flex justify-center py-3 cursor-pointer px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >

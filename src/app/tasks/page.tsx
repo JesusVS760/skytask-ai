@@ -1,6 +1,6 @@
 "use client";
 
-import { TaskCalendar } from "@/features/tasks/components/task-calendar";
+import { EventCalendar } from "@/components/event-calendar";
 import TaskPriorityFiltering from "@/features/tasks/components/task-filter-priority";
 import { TaskList } from "@/features/tasks/components/task-list";
 import TaskSearchByName from "@/features/tasks/components/task-search-by-name";
@@ -148,7 +148,8 @@ export default function TaskPage() {
               {view === "Table" ? (
                 <TaskList tasks={tasksToDisplay} setToastSuccessMsg={setToastSuccessMsg} />
               ) : (
-                <TaskCalendar tasks={tasksToDisplay} />
+                // <TaskCalendar tasks={tasksToDisplay} />
+                <EventCalendar />
               )}
             </div>
           )}

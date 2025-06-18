@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
           id: user?.id,
         },
       },
+      dueDate: new Date(taskData.dueDate),
     });
 
     return NextResponse.json({ task }, { status: 201 });

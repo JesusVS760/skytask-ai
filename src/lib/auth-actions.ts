@@ -147,15 +147,10 @@ export async function VerifyResetCode(formData: FormData) {
 export async function changePassword(formData: FormData) {
   const oldPassword = formData.get("oldPassword") as string;
   const newPassword = formData.get("newPassword") as string;
+  const email = formData.get("email") as string;
 
-  if (!oldPassword || !newPassword) {
+  if (!oldPassword || !newPassword || !email) {
     throw new Error("Missing required fields");
-  }
-
-  const email = localStorage.getItem("verifyEmail");
-
-  if (!email) {
-    throw new Error("Failed to get email");
   }
 
   const user = prisma.user.findUnique({ where: { email } });
