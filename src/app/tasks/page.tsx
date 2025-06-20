@@ -1,6 +1,6 @@
 "use client";
 
-import { EventCalendar } from "@/components/event-calendar";
+import { CalendarEvent, EventCalendar } from "@/components/event-calendar";
 import TaskPriorityFiltering from "@/features/tasks/components/task-filter-priority";
 import { TaskList } from "@/features/tasks/components/task-list";
 import TaskSearchByName from "@/features/tasks/components/task-search-by-name";
@@ -78,6 +78,33 @@ export default function TaskPage() {
     );
   }
 
+  const converted: CalendarEvent[] = tasksToDisplay.map((task) => {
+    // Convert dueDate to proper Date object
+    const dueDate = new Date(task.dueDate);
+
+    // Validate the date conversion
+    if (isNaN(dueDate.getTime())) {
+      console.warn(`Invalid dueDate for task ${task.id}:`, task.dueDate);
+      const fallbackDate = new Date();
+      return {
+        id: task.id,
+        title: task.title,
+        start: fallbackDate,
+        end: new Date(fallbackDate.getTime() + 60 * 60 * 1000), // +1 hour
+        allDay: false,
+      };
+    }
+    console.log(dueDate);
+    return {
+      id: task.id,
+      title: task.title,
+      start: dueDate,
+      end: new Date(dueDate.getTime() + 60 * 60 * 1000), // +1 hour
+      allDay: false,
+      // add other fields if needed
+    };
+  });
+
   return (
     <div className="min-h-screen  px-4 py-8">
       <Toaster />
@@ -149,7 +176,7 @@ export default function TaskPage() {
                 <TaskList tasks={tasksToDisplay} setToastSuccessMsg={setToastSuccessMsg} />
               ) : (
                 // <TaskCalendar tasks={tasksToDisplay} />
-                <EventCalendar />
+                <EventCalendar events={converted} />
               )}
             </div>
           )}

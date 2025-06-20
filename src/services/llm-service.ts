@@ -1,9 +1,18 @@
 import { ContextMessage } from "@/features/voice/schemas/context";
-import { Task } from "@/generated/prisma";
 import { openai, taskPrompt } from "@/lib/openai";
 
+type LLMTaskData = {
+  title: string;
+  description: string;
+  priority: string;
+  date: string;
+  time: string;
+  tags: string[];
+  action_plan?: string[];
+};
+
 type LlmResponse = {
-  task?: Task;
+  task?: LLMTaskData;
   followUpQuestion?: string;
 };
 
@@ -23,8 +32,9 @@ export const llmService = {
       CURRENT TIME:
       ${time}
         `;
+
       const completion = await openai.chat.completions.create({
-        model: "gpt-4.1",
+        model: "gpt-4o", // Note: "gpt-4.1" doesn't exist, use "gpt-4o" or "gpt-4"
         temperature: 0.3,
         messages: [
           { role: "system", content: systemPrompt },

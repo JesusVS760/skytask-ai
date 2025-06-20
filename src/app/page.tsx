@@ -5,8 +5,8 @@ import { useTaskMutations } from "@/features/tasks/hooks/tasks-mutations";
 import { useChat } from "@/features/tasks/hooks/use-chat";
 import VoiceRecorder from "@/features/voice/components/voice-recorder";
 import { useLLMMutations } from "@/features/voice/hooks/llm-mutation";
-import { parseDateTime } from "@/lib/utils";
 import axios from "axios";
+
 import { Mic } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -67,14 +67,13 @@ export default function Home() {
               });
             } else if (task.task) {
               const taskData = task.task;
-
-              const dateTime = parseDateTime(taskData.createdAt);
+              console.log("Full response:", taskData);
 
               const newTask = {
                 title: taskData.title,
                 description: taskData.description,
                 priority: taskData.priority,
-                dueDate: dateTime,
+                dueDate: taskData.dueDate || new Date(),
                 tags: taskData.tags || [],
                 user: user.id,
               };

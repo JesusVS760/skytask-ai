@@ -153,7 +153,6 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
     // Use generic title if empty
     const eventTitle = title.trim() ? title : "(no title)";
-
     onSave({
       id: event?.id || "",
       title: eventTitle,
