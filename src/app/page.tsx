@@ -67,8 +67,7 @@ export default function Home() {
               });
             } else if (task.task) {
               const taskData = task.task;
-              console.log("Full response:", taskData);
-
+              console.log(task.task);
               const newTask = {
                 title: taskData.title,
                 description: taskData.description,

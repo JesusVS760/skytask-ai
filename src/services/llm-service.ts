@@ -1,18 +1,9 @@
 import { ContextMessage } from "@/features/voice/schemas/context";
 import { openai, taskPrompt } from "@/lib/openai";
-
-type LLMTaskData = {
-  title: string;
-  description: string;
-  priority: string;
-  date: string;
-  time: string;
-  tags: string[];
-  action_plan?: string[];
-};
+import { Task } from "@prisma/client";
 
 type LlmResponse = {
-  task?: LLMTaskData;
+  task?: Task;
   followUpQuestion?: string;
 };
 
@@ -47,6 +38,7 @@ export const llmService = {
       if (!content) throw new Error("No response from OpenAI");
 
       const parsed = JSON.parse(content) as LlmResponse;
+      console.log(content);
 
       if (parsed.followUpQuestion) {
         return {
