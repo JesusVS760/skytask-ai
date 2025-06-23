@@ -72,7 +72,7 @@ export default function Home() {
                 title: taskData.title,
                 description: taskData.description,
                 priority: taskData.priority,
-                dueDate: taskData.dueDate || new Date(),
+                dueDate: taskData.dueDate,
                 tags: taskData.tags || [],
                 user: user.id,
               };

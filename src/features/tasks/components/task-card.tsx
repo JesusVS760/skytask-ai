@@ -17,6 +17,7 @@ import { useTaskMutations } from "../hooks/tasks-mutations";
 import { useConfirm } from "../hooks/use-confirm";
 
 import TagDropdown from "@/components/list-collapse";
+import TaskDateChanger from "../hooks/task-date-changer";
 import EditableTaskRow from "./task-editable-row";
 
 type TaskCardProps = {
@@ -65,16 +66,19 @@ export const TaskCard = ({ task, setToastSuccessMsg }: TaskCardProps) => {
       });
     }
   };
-  const isoString = task.dueDate.toString();
-  const readable = new Date(isoString).toLocaleString("en-US", {
-    weekday: "short",
-    // year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
+  // const isoString = task.dueDate.toString();
+  // const readable = new Date(isoString).toLocaleString("en-US", {
+  //   weekday: "short",
+  //   month: "short",
+  //   day: "numeric",
+  //   hour: "numeric",
+  //   minute: "2-digit",
+  //   hour12: true,
+  //   timeZoneName: undefined,
+  //   timeZone: "America/Los_Angeles",
+  // });
+  const readable = TaskDateChanger(task);
+
   return isEditing ? (
     <EditableTaskRow
       task={task}
