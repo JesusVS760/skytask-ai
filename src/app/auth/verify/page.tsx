@@ -86,10 +86,10 @@ export default function VerifyCode() {
           </div>
           <div className="pb-4 gap-4 text-center">
             <div>
-              <h1 className="text-2xl font-semibold text-white">Check Your Email</h1>
+              <h1 className="text-2xl font-semibold text-black">Check Your Email</h1>
             </div>
             <div>
-              <p className="text-white/90">
+              <p className="text-black/90">
                 We sent a 6-digit code to <span className="font-medium">{email}</span>
               </p>
             </div>
@@ -113,7 +113,7 @@ export default function VerifyCode() {
               id="code"
               maxLength={6}
               placeholder="000000"
-              className="w-full px-3 text-white py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-center text-2xl font-mono tracking-widest"
+              className="w-full px-3 text-black py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-center text-2xl font-mono tracking-widest"
             />
             {errors.code && <div className="mt-1 text-sm text-red-600">{errors.code.message}</div>}
           </div>

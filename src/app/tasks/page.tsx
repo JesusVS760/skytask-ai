@@ -113,8 +113,8 @@ export default function TaskPage() {
       </p> */}
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2 text-shadow-lg/30">Your Tasks</h1>
-          <p className="text-white/90">Organize, prioritize, and accomplish your goals</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Your Tasks</h1>
+          <p className="text-gray-600/90">Organize, prioritize, and accomplish your goals</p>
         </div>
 
         <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">

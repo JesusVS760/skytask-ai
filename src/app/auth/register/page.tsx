@@ -74,8 +74,8 @@ export default function RegisterPage() {
               />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold text-white">Create your account</h2>
-          <p className="mt-2 text-sm text-white/90">Join SayTask AI and organize your life</p>
+          <h2 className="text-3xl font-bold text-black">Create your account</h2>
+          <p className="mt-2 text-sm text-black/90">Join SayTask AI and organize your life</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">

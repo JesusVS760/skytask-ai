@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useTaskMutations } from "@/features/tasks/hooks/tasks-mutations";
 import { cn } from "@/lib/utils";
 
 interface EventDialogProps {
@@ -57,6 +58,8 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
   const [error, setError] = useState<string | null>(null);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
+
+  const { createTask } = useTaskMutations();
 
   // Debug log to check what event is being passed
   useEffect(() => {
@@ -120,7 +123,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
     return options;
   }, []); // Empty dependency array ensures this only runs once
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
@@ -153,6 +156,21 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
     // Use generic title if empty
     const eventTitle = title.trim() ? title : "(no title)";
+
+    // Create task using mutation
+    try {
+      await createTask.mutateAsync({
+        title: eventTitle,
+        description: description.trim() || undefined,
+        priority: "medium",
+        dueDate: end,
+      });
+    } catch (error) {
+      setError("Failed to create task");
+      return;
+    }
+
+    // Also save as event
     onSave({
       id: event?.id || "",
       title: eventTitle,

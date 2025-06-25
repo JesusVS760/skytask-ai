@@ -66,10 +66,10 @@ export default function ForgotPassword() {
         </div>
         <div className="pb-4 gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-white">Forgot Password?</h1>
+            <h1 className="text-2xl font-semibold text-black">Forgot Password?</h1>
           </div>
           <div>
-            <p className="text-white/90">Enter email to get access.</p>
+            s<p className="text-black/90">Enter email to get access.</p>
           </div>
         </div>
       </div>

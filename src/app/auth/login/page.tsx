@@ -58,10 +58,10 @@ export default function LoginPage() {
         </div>
         <div className="pb-4 gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-white">Welcome Back!</h1>
+            <h1 className="text-2xl font-semibold text-black">Welcome Back!</h1>
           </div>
           <div>
-            <p className="text-white/90">Login to access your tasks.</p>
+            <p className="text-black/90">Login to access your tasks.</p>
           </div>
         </div>
       </div>
