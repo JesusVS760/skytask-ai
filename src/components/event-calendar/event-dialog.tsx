@@ -165,8 +165,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
         priority: "medium",
         dueDate: end,
       });
-    } catch (_error) {
+    } catch (error) {
       setError("Failed to create task");
+      console.error(error);
       return;
     }
 
