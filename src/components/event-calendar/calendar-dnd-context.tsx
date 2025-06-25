@@ -16,7 +16,7 @@ import {
 import { addMinutes, differenceInMinutes } from "date-fns";
 import { createContext, useContext, useId, useRef, useState, type ReactNode } from "react";
 
-import { EventItem, type CalendarEvent } from "@/components/event-calendar/event-calendar";
+import { EventItem, type CalendarEvent } from "../../components/event-calendar/event-item";
 
 // Define the context type
 type CalendarDndContextType = {

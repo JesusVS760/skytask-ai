@@ -254,3 +254,5 @@ export function EventItem({
     </button>
   );
 }
+
+export { CalendarEvent };
