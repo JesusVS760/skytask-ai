@@ -378,3 +378,5 @@ export function EventCalendar({
     </div>
   );
 }
+
+export type { CalendarEvent };
