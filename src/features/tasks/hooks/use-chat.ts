@@ -1,8 +1,12 @@
 import { ContextMessage } from "@/features/voice/schemas/context";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const useChat = () => {
   const [messages, setMessages] = useState<ContextMessage[]>([]);
+
+  useEffect(() => {
+    console.log("should reset");
+  }, [messages]);
 
   const reset = () => {
     setMessages([]);

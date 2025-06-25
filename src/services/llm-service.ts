@@ -49,7 +49,7 @@ export const llmService = {
       return parsed;
     } catch (error) {
       console.error("Error parsing LLM response:", error);
-      return { followUpQuestion: "There was an error processing the task." };
+      return { followUpQuestion: "There was an error processing the task. Try again!" };
     }
   },
 };
