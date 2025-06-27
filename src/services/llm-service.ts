@@ -1,15 +1,18 @@
 import { ContextMessage } from "@/features/voice/schemas/context";
 import { Task } from "@/generated/prisma";
-import { openai, taskPrompt } from "@/lib/openai";
-
+import { taskPrompt } from "@/lib/openai";
+import OpenAI from "openai";
 type LlmResponse = {
   task?: Task;
   followUpQuestion?: string;
 };
-
 export const llmService = {
   async generateTask(text: string, context: ContextMessage[]): Promise<LlmResponse> {
     try {
+      const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+
       const date = new Date().toLocaleDateString();
       const time = new Date().toLocaleTimeString();
 
@@ -25,14 +28,13 @@ export const llmService = {
         `;
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o", // Note: "gpt-4.1" doesn't exist, use "gpt-4o" or "gpt-4"
+        model: "gpt-4o",
         temperature: 0.3,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: text },
         ],
       });
-
       const content = completion.choices[0]?.message.content;
 
       if (!content) throw new Error("No response from OpenAI");
