@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "test-db": "node --experimental-modules --es-module-specifier-resolution=node src/lib/db-test.mjs"
   },
   "dependencies": {
