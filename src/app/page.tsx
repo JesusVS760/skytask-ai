@@ -50,7 +50,6 @@ export default function Home() {
 
     return () => clearInterval(timer);
   }, []);
-
   useEffect(() => {
     checkAuth();
   }, []);

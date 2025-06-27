@@ -39,6 +39,7 @@ export default function ResetPassword() {
     if (email) {
       setGetEmail(email);
       setValue("email", email);
+      console.log(email);
     }
   }, [setValue]);
 
