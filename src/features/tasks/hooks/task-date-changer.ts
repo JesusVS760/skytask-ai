@@ -1,4 +1,4 @@
-import { Task } from "@prisma/client";
+import { Task } from "@/generated/prisma";
 
 export default function TaskDateChanger(task: Task) {
   const isoString = task.dueDate.toString();
