@@ -69,7 +69,7 @@ export default function ForgotPassword() {
             <h1 className="text-2xl font-semibold text-black">Forgot Password?</h1>
           </div>
           <div>
-            s<p className="text-black/90">Enter email to get access.</p>
+            <p className="text-black/90">Enter email to get access.</p>
           </div>
         </div>
       </div>

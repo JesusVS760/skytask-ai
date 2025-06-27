@@ -2,7 +2,6 @@
 
 import { changePassword } from "@/lib/auth-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Key } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -75,25 +74,43 @@ export default function ResetPassword() {
   const disabledButton = !isValid || loading;
   return (
     <div className=" flex flex-col items-center justify-center h-screen">
-      <div className="bg-white p-8 rounded-md border-2 shadow-2xl">
+      <div className="bg-white p-8 px-12 rounded- border-2 shadow-2xl">
         <div className=" flex flex-col items-center justify-center">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-black">Reset account password </h1>
-            <div>
-              <Key />
+            <div className="mx-auto h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center mb-4">
+              <svg
+                className="h-6 w-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M16 7a1 1 0 011 1v1m-2-2a1 1 0 00-1 1v1m4-1l1-1m-1 1l1 1"
+                />
+              </svg>
             </div>
           </div>
-          <p className="text-black/80 ">
-            Enter a new password for <span className="text-blue-600 animate-pulse">{getEmail}</span>
-          </p>
+          <div>
+            <h1 className="text-2xl font-bold text-black">Reset account password </h1>
+            <p className="text-black/80 ">
+              Enter a new password for
+              <span className="text-blue-600 animate-pulse">{getEmail}</span>
+            </p>
+          </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-white  py-12 m-8 rounded-xl space-y-4"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-white  py-12 rounded-xl space-y-4">
           <div>
-            <div className="my-2">
+            <div>
               <input
                 {...register("oldPassword")}
                 type="password"

@@ -160,15 +160,6 @@ export default function LoginPage() {
               Click here
             </Link>
           </p>
-          <p className="text-sm text-gray-600">
-            Reset password?
-            <Link
-              href="/auth/reset"
-              className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
-            >
-              Reset here
-            </Link>
-          </p>
         </div>
       </div>
     </div>
