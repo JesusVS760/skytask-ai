@@ -1,6 +1,6 @@
 import { ContextMessage } from "@/features/voice/schemas/context";
+import { Task } from "@/generated/prisma";
 import { openai, taskPrompt } from "@/lib/openai";
-import { Task } from "@prisma/client";
 
 type LlmResponse = {
   task?: Task;
