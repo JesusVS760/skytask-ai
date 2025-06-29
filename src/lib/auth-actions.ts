@@ -13,21 +13,25 @@ export async function signUp(formData: FormData) {
   const password = formData.get("password") as string;
 
   if (!firstName || !lastName || !email || !password) {
-    throw new Error("All fields required");
+    return { error: "All fields required" };
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    throw new Error("User already exists");
+    return { error: "User already exists" };
   }
 
-  const hashedPassword = await hashPassword(password);
-  const user = await prisma.user.create({
-    data: { firstName, lastName, email, hashedPassword },
-  });
+  try {
+    const hashedPassword = await hashPassword(password);
+    const user = await prisma.user.create({
+      data: { firstName, lastName, email, hashedPassword },
+    });
 
-  await createSession(user.id);
-  redirect("/");
+    await createSession(user.id);
+    redirect("/");
+  } catch (error) {
+    return { error: "Failed to create user" };
+  }
 }
 
 export async function signIn(formData: FormData) {
@@ -35,18 +39,23 @@ export async function signIn(formData: FormData) {
   const password = formData.get("password") as string;
 
   if (!email || !password) {
-    throw new Error("Email and password required");
+    return { error: "Email and password required" };
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
-  if (!user || !(await verifyPassword(password, user.hashedPassword))) {
-    throw new Error("Invalid credentials");
-  }
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-  await createSession(user.id);
-  redirect("/");
+    if (!user || !(await verifyPassword(password, user.hashedPassword))) {
+      return { error: "Invalid credentials" };
+    }
+
+    await createSession(user.id);
+    redirect("/");
+  } catch (error) {
+    return { error: "Sign in failed" };
+  }
 }
 
 export async function signOut() {
@@ -65,35 +74,39 @@ function generateToken(): string {
 export async function sendVerifyCode(formData: FormData) {
   const email = formData.get("email") as string;
 
-  if (!email) throw new Error("Email required");
+  if (!email) return { error: "Email required" };
 
-  console.log(email);
-  const user = await prisma.user.findUnique({ where: { email } });
+  try {
+    console.log(email);
+    const user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user) {
-    throw new Error("User not found with this email address");
+    if (!user) {
+      return { error: "User not found with this email address" };
+    }
+
+    const code = generateCode();
+    const token = generateToken();
+    const expires = new Date(Date.now() + 60 * 60 * 1000);
+
+    await prisma.verificationToken.deleteMany({ where: { userId: user?.id } });
+    console.log("User ID:", user.id);
+    console.log("Token data:", { token, code, expires, userId: user.id });
+
+    await prisma.verificationToken.create({
+      data: {
+        token,
+        code,
+        expires,
+        userId: user.id,
+      },
+    });
+
+    await sendVerificationEmail(email, code);
+
+    return { success: true };
+  } catch (error) {
+    return { error: "Failed to send verification code" };
   }
-
-  const code = generateCode();
-  const token = generateToken();
-  const expires = new Date(Date.now() + 60 * 60 * 1000);
-
-  await prisma.verificationToken.deleteMany({ where: { userId: user?.id } });
-  console.log("User ID:", user.id); // Add this before your create call
-  console.log("Token data:", { token, code, expires, userId: user.id });
-
-  await prisma.verificationToken.create({
-    data: {
-      token,
-      code,
-      expires,
-      userId: user.id,
-    },
-  });
-
-  sendVerificationEmail(email, code);
-
-  return { success: true };
 }
 
 export async function VerifyResetCode(formData: FormData) {
@@ -101,47 +114,41 @@ export async function VerifyResetCode(formData: FormData) {
   const email = formData.get("email") as string;
 
   if (!code || !email) {
-    throw new Error("Missing required fields");
+    return { error: "Missing required fields" };
   }
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  console.log("User Found:", user);
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    console.log("User Found:", user);
 
-  if (!user) throw new Error("User not found");
+    if (!user) return { error: "User not found" };
 
-  const verify = await prisma.verificationToken.findFirst({
-    where: {
-      code: code.trim(),
-      userId: user.id,
-      type: "EMAIL_VERIFICATION",
-      used: false,
-      expires: {
-        gt: new Date(),
+    const verify = await prisma.verificationToken.findFirst({
+      where: {
+        code: code.trim(),
+        userId: user.id,
+        type: "EMAIL_VERIFICATION",
+        used: false,
+        expires: {
+          gt: new Date(),
+        },
       },
-    },
-  });
+    });
 
-  console.log("Query conditions:", {
-    code: code.trim(),
-    userId: user.id,
-    type: "EMAIL_VERIFICATION",
-    used: false,
-    currentTime: new Date(),
-  });
-  console.log("Matching token found:", verify);
+    if (!verify) {
+      return { error: "Invalid or expired verification code" };
+    }
 
-  if (!verify) {
-    throw new Error("Verifcation Token Failed");
+    await prisma.verificationToken.update({
+      where: { id: verify.id },
+      data: { used: true },
+    });
+
+    await createSession(user.id);
+    redirect("/auth/reset");
+  } catch (error) {
+    return { error: "Verification failed" };
   }
-
-  await prisma.verificationToken.update({
-    where: { id: verify.id },
-    data: { used: true },
-  });
-
-  await createSession(user.id);
-
-  redirect("/auth/reset");
 }
 
 export async function changePassword(formData: FormData) {
@@ -150,23 +157,32 @@ export async function changePassword(formData: FormData) {
   const email = formData.get("email") as string;
 
   if (!oldPassword || !newPassword || !email) {
-    throw new Error("Missing required fields");
+    return { error: "Missing required fields" };
   }
 
-  const user = prisma.user.findUnique({ where: { email } });
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user) throw new Error("User not found");
+    if (!user) return { error: "User not found" };
 
-  const hashed = await hashPassword(newPassword);
+    // Verify old password
+    if (!(await verifyPassword(oldPassword, user.hashedPassword))) {
+      return { error: "Current password is incorrect" };
+    }
 
-  await prisma.user.update({
-    where: {
-      email: email,
-    },
-    data: {
-      hashedPassword: hashed,
-    },
-  });
+    const hashed = await hashPassword(newPassword);
 
-  redirect("/");
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        hashedPassword: hashed,
+      },
+    });
+
+    redirect("/");
+  } catch (error) {
+    return { error: "Failed to change password" };
+  }
 }
