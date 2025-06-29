@@ -39,7 +39,7 @@ export default function LoginPage() {
       if (result.error) {
         setError(result.error);
       }
-    } catch (error) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

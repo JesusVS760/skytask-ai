@@ -43,7 +43,7 @@ export default function ForgotPassword() {
       if (error) {
         setError("Failed to create account");
       }
-    } catch (error) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       isLoading(false);

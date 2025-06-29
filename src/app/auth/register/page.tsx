@@ -52,7 +52,7 @@ export default function RegisterPage() {
       if (result.error) {
         setError(result.error);
       }
-    } catch (error) {
+    } catch {
       setError("An unexpected errror occurred");
     } finally {
       setLoading(false);
