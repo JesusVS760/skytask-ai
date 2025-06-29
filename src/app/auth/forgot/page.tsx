@@ -34,11 +34,13 @@ export default function ForgotPassword() {
     let shouldRedirect = false;
 
     try {
-      const { success } = await sendVerifyCode(formData);
+      const { success, error } = await sendVerifyCode(formData);
       if (success) {
         toast("Succesfully sent code ✔️!");
         sessionStorage.setItem("verifyEmail", data.email);
         shouldRedirect = true;
+      } else if (error) {
+        setError("Failed to create account");
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "Failed to create account");

@@ -29,7 +29,7 @@ export async function signUp(formData: FormData) {
 
     await createSession(user.id);
     redirect("/");
-  } catch (error) {
+  } catch {
     return { error: "Failed to create user" };
   }
 }
@@ -53,7 +53,7 @@ export async function signIn(formData: FormData) {
 
     await createSession(user.id);
     redirect("/");
-  } catch (error) {
+  } catch {
     return { error: "Sign in failed" };
   }
 }
@@ -104,7 +104,7 @@ export async function sendVerifyCode(formData: FormData) {
     await sendVerificationEmail(email, code);
 
     return { success: true };
-  } catch (error) {
+  } catch {
     return { error: "Failed to send verification code" };
   }
 }
@@ -146,7 +146,7 @@ export async function VerifyResetCode(formData: FormData) {
 
     await createSession(user.id);
     redirect("/auth/reset");
-  } catch (error) {
+  } catch {
     return { error: "Verification failed" };
   }
 }
@@ -182,7 +182,7 @@ export async function changePassword(formData: FormData) {
     });
 
     redirect("/");
-  } catch (error) {
+  } catch {
     return { error: "Failed to change password" };
   }
 }
