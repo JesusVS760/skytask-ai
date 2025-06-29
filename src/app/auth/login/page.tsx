@@ -3,6 +3,7 @@
 import { signIn } from "@/lib/auth-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,6 +18,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -35,9 +38,11 @@ export default function LoginPage() {
     formData.append("password", data.password);
 
     try {
-      const result = await signIn(formData);
-      if (result.error) {
-        setError(result.error);
+      const { error } = await signIn(formData);
+      if (error) {
+        setError(error);
+      } else {
+        router.push("/");
       }
     } catch {
       setError("An unexpected error occurred");

@@ -26,10 +26,11 @@ export async function signUp(formData: FormData) {
     const user = await prisma.user.create({
       data: { firstName, lastName, email, hashedPassword },
     });
-
+    console.log(user);
     await createSession(user.id);
-    redirect("/");
-  } catch {
+
+    return { success: true };
+  } catch (error) {
     return { error: "Failed to create user" };
   }
 }
@@ -52,7 +53,7 @@ export async function signIn(formData: FormData) {
     }
 
     await createSession(user.id);
-    redirect("/");
+    return { success: true };
   } catch {
     return { error: "Sign in failed" };
   }
