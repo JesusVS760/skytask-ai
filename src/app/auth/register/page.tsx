@@ -47,9 +47,13 @@ export default function RegisterPage() {
     formData.append("password", data.password);
 
     try {
-      await signUp(formData);
+      const result = await signUp(formData);
+
+      if (result.error) {
+        setError(result.error);
+      }
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to create account");
+      setError("An unexpected errror occurred");
     } finally {
       setLoading(false);
     }

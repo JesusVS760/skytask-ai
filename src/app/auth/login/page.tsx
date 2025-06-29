@@ -35,9 +35,12 @@ export default function LoginPage() {
     formData.append("password", data.password);
 
     try {
-      await signIn(formData);
+      const result = await signIn(formData);
+      if (result.error) {
+        setError(result.error);
+      }
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to create account");
+      setError("An unexpected error occurred");
     } finally {
       setLoading(false);
     }

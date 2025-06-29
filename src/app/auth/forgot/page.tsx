@@ -39,11 +39,12 @@ export default function ForgotPassword() {
         toast("Succesfully sent code ✔️!");
         sessionStorage.setItem("verifyEmail", data.email);
         shouldRedirect = true;
-      } else if (error) {
+      }
+      if (error) {
         setError("Failed to create account");
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to create account");
+      setError("An unexpected error occurred");
     } finally {
       isLoading(false);
     }
