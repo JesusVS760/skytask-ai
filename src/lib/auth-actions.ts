@@ -30,8 +30,9 @@ export async function signUp(formData: FormData) {
     await createSession(user.id);
 
     return { success: true };
-  } catch {
-    return { error: "Failed to create user" };
+  } catch (err) {
+    console.error("Production error during signUp:", err);
+    throw err;
   }
 }
 
