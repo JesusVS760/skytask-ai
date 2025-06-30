@@ -39,6 +39,7 @@ export async function signUp(formData: FormData) {
     if (err.code === "P2002") {
       return { error: "Email already exists" };
     }
+    console.log(err);
     return { error: "Failed to create account. Please try again." };
   }
 }
