@@ -58,7 +58,6 @@ export async function signUp(formData: FormData) {
       code: err.code || "No code",
     });
 
-    // More specific error messages based on error type
     if (err.code === "P2002") {
       return { error: "Email already exists" };
     }
@@ -76,25 +75,48 @@ export async function signUp(formData: FormData) {
 }
 
 export async function signIn(formData: FormData) {
+  console.log("signIn function called");
+
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
+  console.log("Form data received:", { email, passwordLength: password?.length });
+
   if (!email || !password) {
+    console.log("Missing email or password");
     return { error: "Email and password required" };
   }
 
   try {
+    console.log("Finding user by email...");
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
-    if (!user || !(await verifyPassword(password, user.hashedPassword))) {
+    if (!user) {
+      console.log("User not found");
       return { error: "Invalid credentials" };
     }
 
+    console.log("User found, verifying password...");
+    const isValidPassword = await verifyPassword(password, user.hashedPassword);
+
+    if (!isValidPassword) {
+      console.log("Invalid password");
+      return { error: "Invalid credentials" };
+    }
+
+    console.log("Password valid, creating session...");
     await createSession(user.id);
+
+    console.log("Session created successfully");
     return { success: true };
-  } catch {
+  } catch (err: any) {
+    console.error("Detailed error during signIn:", {
+      message: err.message,
+      stack: err.stack,
+      name: err.name,
+    });
     return { error: "Sign in failed" };
   }
 }

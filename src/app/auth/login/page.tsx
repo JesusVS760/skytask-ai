@@ -38,11 +38,12 @@ export default function LoginPage() {
     formData.append("password", data.password);
 
     try {
-      const { error } = await signIn(formData);
-      if (error) {
+      const result = await signIn(formData);
+      if (result.error) {
         setError(error);
-      } else {
+      } else if (result?.success) {
         router.push("/");
+        return;
       }
     } catch {
       setError("An unexpected error occurred");
