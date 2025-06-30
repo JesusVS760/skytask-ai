@@ -49,7 +49,9 @@ export async function signUp(formData: FormData) {
     await createSession(user.id);
 
     console.log("Session created successfully");
-    return { success: true };
+
+    // Add server-side redirect here
+    redirect("/");
   } catch (err: any) {
     console.error("Detailed error during signUp:", {
       message: err.message,
@@ -110,7 +112,9 @@ export async function signIn(formData: FormData) {
     await createSession(user.id);
 
     console.log("Session created successfully");
-    return { success: true };
+
+    // Add server-side redirect here
+    redirect("/");
   } catch (err: any) {
     console.error("Detailed error during signIn:", {
       message: err.message,
