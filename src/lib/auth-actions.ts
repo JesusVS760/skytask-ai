@@ -71,6 +71,9 @@ export async function signIn(formData: FormData) {
     // Return success instead of redirecting
     return { success: true };
   } catch (err: any) {
+    if (err) {
+      return { error: "Session already exists" };
+    }
     return { error: "Sign in failed" };
   }
 }
