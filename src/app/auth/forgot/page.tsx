@@ -2,7 +2,7 @@
 
 import { sendVerifyCode } from "@/lib/auth-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
@@ -17,6 +17,8 @@ type forgotFormData = z.infer<typeof forgotSchema>;
 export default function ForgotPassword() {
   const [error, setError] = useState<string | null>(null);
   const [loading, isLoading] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -39,6 +41,7 @@ export default function ForgotPassword() {
         toast("Succesfully sent code ✔️!");
         sessionStorage.setItem("verifyEmail", data.email);
         shouldRedirect = true;
+        router.push("/auth/reset");
       }
       if (error) {
         setError("Failed to create account");
@@ -49,7 +52,7 @@ export default function ForgotPassword() {
       isLoading(false);
     }
     if (shouldRedirect) {
-      redirect("/auth/verify");
+      router.push("/auth/verify");
     }
   }
 

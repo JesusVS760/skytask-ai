@@ -26,7 +26,7 @@ export async function signUp(formData: FormData) {
     const user = await prisma.user.create({
       data: { firstName, lastName, email, hashedPassword },
     });
-    console.log(user);
+
     await createSession(user.id);
 
     return { success: true };
