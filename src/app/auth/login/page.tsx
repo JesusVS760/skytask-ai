@@ -37,7 +37,12 @@ export default function LoginPage() {
     try {
       const result = await signIn(formData);
       if (result?.error) {
-        setError(error);
+        setError(result.error);
+      } else if (result?.success) {
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 200);
+        return;
       }
     } catch {
       setError("An unexpected error occurred");

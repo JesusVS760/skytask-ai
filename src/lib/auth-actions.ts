@@ -14,64 +14,31 @@ export async function signUp(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  console.log("Form data received:", {
-    firstName,
-    lastName,
-    email,
-    passwordLength: password?.length,
-  });
-
   if (!firstName || !lastName || !email || !password) {
-    console.log("Missing required fields");
     return { error: "All fields required" };
   }
 
   try {
-    console.log("Checking for existing user...");
     const existing = await prisma.user.findUnique({ where: { email } });
 
     if (existing) {
-      console.log("User already exists");
       return { error: "User already exists" };
     }
 
-    console.log("Hashing password...");
     const hashedPassword = await hashPassword(password);
 
-    console.log("Creating user in database...");
     const user = await prisma.user.create({
       data: { firstName, lastName, email, hashedPassword },
     });
 
-    console.log("User created successfully:", { userId: user.id });
-
-    console.log("Creating session...");
     await createSession(user.id);
 
-    console.log("Session created successfully");
-
-    // Add server-side redirect here
-    redirect("/");
+    // Return success instead of redirecting
+    return { success: true };
   } catch (err: any) {
-    console.error("Detailed error during signUp:", {
-      message: err.message,
-      stack: err.stack,
-      name: err.name,
-      code: err.code || "No code",
-    });
-
     if (err.code === "P2002") {
       return { error: "Email already exists" };
     }
-
-    if (err.message?.includes("JWT_SECRET")) {
-      return { error: "Server configuration error" };
-    }
-
-    if (err.message?.includes("database") || err.message?.includes("connection")) {
-      return { error: "Database connection error" };
-    }
-
     return { error: "Failed to create account. Please try again." };
   }
 }
@@ -82,45 +49,28 @@ export async function signIn(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  console.log("Form data received:", { email, passwordLength: password?.length });
-
   if (!email || !password) {
-    console.log("Missing email or password");
     return { error: "Email and password required" };
   }
 
   try {
-    console.log("Finding user by email...");
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      console.log("User not found");
       return { error: "Invalid credentials" };
     }
 
-    console.log("User found, verifying password...");
     const isValidPassword = await verifyPassword(password, user.hashedPassword);
 
     if (!isValidPassword) {
-      console.log("Invalid password");
       return { error: "Invalid credentials" };
     }
 
-    console.log("Password valid, creating session...");
     await createSession(user.id);
 
-    console.log("Session created successfully");
-
-    // Add server-side redirect here
-    redirect("/");
+    // Return success instead of redirecting
+    return { success: true };
   } catch (err: any) {
-    console.error("Detailed error during signIn:", {
-      message: err.message,
-      stack: err.stack,
-      name: err.name,
-    });
     return { error: "Sign in failed" };
   }
 }

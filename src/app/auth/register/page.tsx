@@ -53,10 +53,12 @@ export default function RegisterPage() {
 
       if (result?.error) {
         setError(result.error);
-        setLoading(false);
+      } else if (result?.success) {
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 200);
+        return;
       }
-      console.log("Signed in!");
-      router.push("/");
     } catch (error) {
       console.log("Unexpected error during signup:", error);
       setError("An unexpected errror occurred");
