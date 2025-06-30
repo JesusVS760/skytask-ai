@@ -6,7 +6,8 @@ import { prisma } from "./prisma";
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 export async function hashPassword(password: string) {
-  return bcrypt.hash(password, 12);
+  const rounds = parseInt(process.env.BCRYPT_ROUNDS || "12");
+  return bcrypt.hash(password, rounds);
 }
 
 export async function verifyPassword(password: string, hashPassword: string) {

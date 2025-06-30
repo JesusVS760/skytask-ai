@@ -55,6 +55,7 @@ export default function RegisterPage() {
         setError(result.error);
         setLoading(false);
       }
+      console.log("Signed in!");
       router.push("/");
     } catch (error) {
       console.log("Unexpected error during signup:", error);

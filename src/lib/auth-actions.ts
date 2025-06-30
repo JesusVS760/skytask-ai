@@ -7,32 +7,71 @@ import { prisma } from "./prisma";
 import { sendVerificationEmail } from "./resend";
 
 export async function signUp(formData: FormData) {
+  console.log("signUp function called");
+
   const firstName = formData.get("firstName") as string;
   const lastName = formData.get("lastName") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
+  console.log("Form data received:", {
+    firstName,
+    lastName,
+    email,
+    passwordLength: password?.length,
+  });
+
   if (!firstName || !lastName || !email || !password) {
+    console.log("Missing required fields");
     return { error: "All fields required" };
   }
 
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) {
-    return { error: "User already exists" };
-  }
-
   try {
+    console.log("Checking for existing user...");
+    const existing = await prisma.user.findUnique({ where: { email } });
+
+    if (existing) {
+      console.log("User already exists");
+      return { error: "User already exists" };
+    }
+
+    console.log("Hashing password...");
     const hashedPassword = await hashPassword(password);
+
+    console.log("Creating user in database...");
     const user = await prisma.user.create({
       data: { firstName, lastName, email, hashedPassword },
     });
 
+    console.log("User created successfully:", { userId: user.id });
+
+    console.log("Creating session...");
     await createSession(user.id);
 
+    console.log("Session created successfully");
     return { success: true };
-  } catch (err) {
-    console.error("Production error during signUp:", err);
-    throw err;
+  } catch (err: any) {
+    console.error("Detailed error during signUp:", {
+      message: err.message,
+      stack: err.stack,
+      name: err.name,
+      code: err.code || "No code",
+    });
+
+    // More specific error messages based on error type
+    if (err.code === "P2002") {
+      return { error: "Email already exists" };
+    }
+
+    if (err.message?.includes("JWT_SECRET")) {
+      return { error: "Server configuration error" };
+    }
+
+    if (err.message?.includes("database") || err.message?.includes("connection")) {
+      return { error: "Database connection error" };
+    }
+
+    return { error: "Failed to create account. Please try again." };
   }
 }
 
