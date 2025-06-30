@@ -206,6 +206,14 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-1.0.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -232,8 +240,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id                String              @id @default(cuid())\n  firstName         String\n  lastName          String\n  hashedPassword    String\n  email             String              @unique\n  emailVerified     Boolean             @default(false)\n  createdAt         DateTime            @default(now())\n  sessions          Session[]\n  tasks             Task[]\n  verificationCodes VerificationToken[]\n}\n\nmodel Session {\n  id           String   @id @default(cuid())\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  createdAt    DateTime @default(now())\n  lastUsed     DateTime @default(now())\n  userAgent    String?\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nmodel VerificationToken {\n  id        String           @id @default(cuid())\n  code      String\n  userId    String\n  token     String           @unique\n  type      VerificationType @default(EMAIL_VERIFICATION)\n  expires   DateTime\n  used      Boolean          @default(false)\n  createdAt DateTime         @default(now())\n  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, token])\n}\n\nenum VerificationType {\n  EMAIL_VERIFICATION\n  PASSWORD_RESET\n  TWO_FACTOR\n}\n\nenum TaskPriority {\n  high\n  medium\n  low\n}\n\nenum TaskStatus {\n  archived\n  completed\n  pending\n}\n\nenum Intervals {\n  daily\n  weekly\n  biweekly\n  monthly\n}\n\nmodel Task {\n  id                String       @id @default(cuid())\n  createdAt         DateTime     @default(now())\n  updatedAt         DateTime     @updatedAt\n  title             String // wanted\n  description       String? // wanted\n  status            TaskStatus   @default(pending)\n  priority          TaskPriority // wanted\n  dueDate           DateTime // wanted\n  tags              String[] // wanted\n  isRecurring       Boolean?     @default(false) // later\n  recurringInterval Intervals? // later\n  userId            String\n  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\n// task suggestions\n",
-  "inlineSchemaHash": "ac8bc618e226f6b09f89a41265d537ef86a4f2dc2d3577e877d15d3e2e32a9ae",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-1.0.x\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id                String              @id @default(cuid())\n  firstName         String\n  lastName          String\n  hashedPassword    String\n  email             String              @unique\n  emailVerified     Boolean             @default(false)\n  createdAt         DateTime            @default(now())\n  sessions          Session[]\n  tasks             Task[]\n  verificationCodes VerificationToken[]\n}\n\nmodel Session {\n  id           String   @id @default(cuid())\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  createdAt    DateTime @default(now())\n  lastUsed     DateTime @default(now())\n  userAgent    String?\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nmodel VerificationToken {\n  id        String           @id @default(cuid())\n  code      String\n  userId    String\n  token     String           @unique\n  type      VerificationType @default(EMAIL_VERIFICATION)\n  expires   DateTime\n  used      Boolean          @default(false)\n  createdAt DateTime         @default(now())\n  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, token])\n}\n\nenum VerificationType {\n  EMAIL_VERIFICATION\n  PASSWORD_RESET\n  TWO_FACTOR\n}\n\nenum TaskPriority {\n  high\n  medium\n  low\n}\n\nenum TaskStatus {\n  archived\n  completed\n  pending\n}\n\nenum Intervals {\n  daily\n  weekly\n  biweekly\n  monthly\n}\n\nmodel Task {\n  id                String       @id @default(cuid())\n  createdAt         DateTime     @default(now())\n  updatedAt         DateTime     @updatedAt\n  title             String // wanted\n  description       String? // wanted\n  status            TaskStatus   @default(pending)\n  priority          TaskPriority // wanted\n  dueDate           DateTime // wanted\n  tags              String[] // wanted\n  isRecurring       Boolean?     @default(false) // later\n  recurringInterval Intervals? // later\n  userId            String\n  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\n// task suggestions\n",
+  "inlineSchemaHash": "95ad4a45924d6419959372a0b76d6abf06191588bbe90e1e32989cf1f89c5055",
   "copyEngine": true
 }
 
@@ -274,6 +282,14 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-1.0.x.so.node");
+path.join(process.cwd(), "src/generated/prisma/libquery_engine-rhel-openssl-1.0.x.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/generated/prisma/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/prisma/schema.prisma")

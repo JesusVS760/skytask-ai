@@ -36,7 +36,7 @@ export default function LoginPage() {
 
     try {
       const result = await signIn(formData);
-      if (result.error) {
+      if (result?.error) {
         setError(error);
       }
     } catch {
