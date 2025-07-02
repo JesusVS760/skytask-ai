@@ -8,15 +8,14 @@ const nextConfig: NextConfig = {
         "@prisma/client": "@prisma/client",
       });
 
-      // Copy Prisma engines
-      config.plugins.push(require("@prisma/nextjs-monorepo-workaround-plugin").PrismaPlugin());
+      // Copy Prisma engines with proper 'new' constructor
+      const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");
+      config.plugins.push(new PrismaPlugin());
     }
     return config;
   },
-  experimental: {
-    // Help Prisma work better in serverless environments
-    serverComponentsExternalPackages: ["@prisma/client"],
-  },
+  // Updated config option for Next.js 15
+  serverExternalPackages: ["@prisma/client"],
 };
 
 export default nextConfig;
