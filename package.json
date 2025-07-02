@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^6.11.0",
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^3.0.0",
     "@types/formidable": "^3.4.5",
